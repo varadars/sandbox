@@ -1,0 +1,62 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: 'Noto Sans KR', sans-serif;
+
+}
+
+.typed {
+    height: 30px;
+    text-align: center;
+    font-size: 30px;
+    margin: 20px 0 0 0;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center; /* Center the rows horizontally */
+    /* Add 3D perspective */
+    transform: perspective(1000px) rotateY(0deg) rotateX(15deg) scale(0.75); /* Tilt the keyboard */
+}
+
+.row {
+    display: flex;
+    gap: 5px;
+    justify-content: center; /* Center buttons within the row */
+}
+
+p {
+    font-size: 12px;
+    text-align: right;
+    padding: 25px 0 0 5px;
+}
+
+.key {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    gap: 5px;
+    padding: 0 10px;
+    margin: 5px;
+    font-size: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    /* Create a 3D effect where the keys are slightly angled */
+    transform-origin: left;
+}
+
+.key:active {
+    background-color: #ddd;
+}
