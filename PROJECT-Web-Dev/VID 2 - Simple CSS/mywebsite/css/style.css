@@ -1,0 +1,19 @@
+body {
+    background-color: #fefae0;
+    color: #555;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 16px;
+    line-height: 1.5em;
+    margin: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+#my-header {
+    background-color: #bc6c25;
+    color: #fefae0;
+}
