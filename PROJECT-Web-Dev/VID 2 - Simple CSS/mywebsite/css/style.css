@@ -1,6 +1,6 @@
 body {
     background-color: #fefae0;
-    color: #555;
+    color: #283618;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 16px;
     line-height: 1.5em;
@@ -16,4 +16,82 @@ body {
 #my-header {
     background-color: #bc6c25;
     color: #fefae0;
+    font-size: 80px;
+    letter-spacing: 18px;
+}
+
+#navbar {
+    background-color: #283618;
+    color: #fefae0;
+    font-weight: lighter;
+}
+
+#navbar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#navbar li {
+    display: inline;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+}
+
+#navbar a {
+    color: #dda15e;
+    text-decoration: none;
+    font-size: 18px;
+    padding-right: 15px;
+}
+
+#showcase {
+    background-image: url(../images/showcase.jpg);
+    background-position: bottom right;
+    min-height: 300px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#showcase h1 {
+    color: #283618;
+    text-shadow: #fefae0 1px 0 15px;
+    font-size: 50px;
+    line-height: 1.6em;
+    padding-top: 30px;
+}
+
+#main {
+    float: right;
+    width: 80%;
+    padding: 0 50px;
+    box-sizing: border-box;
+}
+
+#sidebar {
+    float: left;
+    width: 20%;
+    background-color: #283618;
+    color:#fefae0;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+#main-footer {
+    background-color: #606c38;
+    color: #283618;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+@media(max-width:600px){
+    #main{
+        width: 100%;
+        float: none;
+    }
+    #sidebar{
+        width: 100%;
+        float: none;
+    }
 }
