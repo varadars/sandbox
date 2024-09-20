@@ -5,12 +5,12 @@ dotenv.config();
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const databaseId = process.env.NOTION_DATABASE_ID;
 
-queryDatabase(databaseId, '우유')
+queryDatabaseAll(databaseId)
     .then(result => {
         console.log(result);
     });
 
-async function queryDatabase(databaseId, word) {
+async function queryDatabaseAll(databaseId, word) {
     try {
         const response = await notion.databases.query({
             database_id: databaseId
@@ -18,10 +18,13 @@ async function queryDatabase(databaseId, word) {
 
         let english = [];
 
-        //return response.results.length;
+        //return response.results[0].properties.Word.title[0].plain_text;
         
         for (let i = 0; i < response.results.length; i++) {
-            english.push(response.results[i].properties.English.rich_text[0].plain_text);
+            let pair = [];
+            pair.push(response.results[i].properties.Word.title[0].plain_text);
+            pair.push(response.results[i].properties.English.rich_text[0].plain_text);
+            english.push(pair);
         }
 
         return english;
