@@ -28,9 +28,9 @@
         </div>
 
         <ul class="social">
-            <li><img src="reddit.png" alt = ""></li>
-            <li><img src="instagram.png" alt = ""></li>
-            <li><img src="youtube.png" alt = ""></li>
+            <li><a href="https://www.reddit.com/user/Prudent_Photo_1106/"><img src="reddit.png" alt = ""></a></li>
+            <li><a href=""><img src="instagram.png" alt = ""></a></li>
+            <li><a href=""><img src="youtube.png" alt = ""></a></li>
         </ul>
     </section>
 
@@ -42,5 +42,15 @@
             <li><a href="#">Blog</a></li>
         </ul>
     </div>
+    <script>
+        const menuToggle = document.querySelector('.toggle');
+        const showcaseToggle = document.querySelector('.showcase');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            showcaseToggle.classList.toggle('active');
+        });
+        
+    </script>
 </body>
 </html>
