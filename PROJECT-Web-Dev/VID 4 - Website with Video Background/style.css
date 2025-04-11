@@ -54,7 +54,7 @@
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
-}
+}   
 
 .toggle.active {
     background: url('close.png');
