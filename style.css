@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
 * {
+    font-family: 'Jetbrains Mono';
     margin: 0;
     padding: 0;
 }
@@ -6,9 +9,44 @@
 body{
     padding: 50px;
     margin: 0 auto;
+    text-align: center;
 }
 
 .title {
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
+}
+
+.title h1 {
+    font-size: 71px;
+    font-style: italic;
+}
+
+.links {
+    margin: 20px 0 ;
+}
+
+.links ul{
+    list-style: none;
+    font-size: 20px;
+    width: fit-content;
+}
+
+.links ul li {
+    border-radius: 5px;
+    width: fit-content;
+    margin: 5px 0;
+    padding: 5px 10px;
+    background-color: rgb(177, 176, 255);
+    border: 5px;
+    border-color: black;
+}
+
+.links ul li a{
+    color: rgb(96, 96, 96);
+    text-decoration: none;
+}
+
+.links ul li a:visited{
+    text-decoration: none;
 }

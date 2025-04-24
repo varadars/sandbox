@@ -144,6 +144,10 @@ body{
     text-align: left;
 }
 
+.card h4, p{
+    text-align: left;
+}
+
 h4 {
     font-weight: 500;
     font-size: 19px;
