@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Profile</title>
+    <link rel="stylesheet" href="member.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" id="back-link" class="back-link">← Back to Group</a>
+            <div id="member-profile" class="member-profile">
+                <!-- Member info will be added here -->
+            </div>
+        
+            <div id="login-button" class="login-button">
+                <!-- Login button will be added here -->
+            </div>
+        </header>
+                
+        <main>
+            <section class="history-section">
+                <h2>Habit History</h2>
+                <div class="history-container">
+                    <table id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Habit</th>
+                                <th>Date Completed</th>
+                                <th>Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- History data will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button id="prev-page" disabled>Previous</button>
+                    <span id="page-info">Page 1 of 1</span>
+                    <button id="next-page" disabled>Next</button>
+                </div>
+            </section>
+        </main>
+
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="error-message" id="login-error"></div>
+                    <button type="submit">Login</button>
+                </form>
+        </div>
+
+    </div>    
+    
+    <script src="member.js"></script>
+</body>
+</html>    
+
+    

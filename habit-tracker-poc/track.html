@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Habits</title>
+    <link rel="stylesheet" href="track.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" id="back-link" class="back-link">← Back to Profile</a>
+            <div id="member-profile" class="member-profile">
+                <!-- Member info will be added here -->
+            </div>
+            <button id="add-habit-btn">+ Add Habit</button>
+        </header>
+        
+        <main>
+            <section class="habits-section">
+                <h2>Need to Complete</h2>
+                <div id="need-to-complete" class="habits-container">
+                    <!-- Habits due will be added here -->
+                </div>
+            </section>
+            
+            <section class="habits-section">
+                <h2>Upcoming Habits</h2>
+                <div id="upcoming-habits" class="habits-container">
+                    <!-- Upcoming habits will be added here -->
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Add Habit Modal -->
+    <div id="add-habit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Habit</h2>
+            <form id="add-habit-form">
+                <div class="form-group">
+                    <label for="habit-name">Habit Name:</label>
+                    <input type="text" id="habit-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="habit-points">Points:</label>
+                    <input type="number" id="habit-points" min="1" value="10" required>
+                </div>
+                <div class="form-group">
+                    <label for="habit-frequency">Frequency:</label>
+                    <select id="habit-frequency" required>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                    </select>
+                </div>
+                <button type="submit">Add Habit</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="track.js"></script>
+</body>
+</html>
