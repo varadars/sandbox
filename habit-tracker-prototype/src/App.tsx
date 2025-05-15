@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { supabase } from "./lib/client";
+import ExampleCard from "./components/ui/card";
 
 function App() {
   const navigate = useNavigate();
@@ -38,7 +39,6 @@ function App() {
 
     if (data) {
       setGroups(data);
-      console.log(data);
     }
   }
 
@@ -50,9 +50,12 @@ function App() {
     <div className="flex flex-col min-h-screen">
       <Navbar /> {/* This stays at the top */}
       <main className="flex flex-col items-center flex-1 justify-center">
-        <h1 className="text-8xl font-bold text-blue-600 mb-15">
+        <h1 className="text-8xl font-bold text-blue-600 mb-5">
           Hello Players!
         </h1>
+        <p className="mt-2 mb-10 italic tracking-wider">
+          welcome to habitual flywheel...
+        </p>
         <section className="bg-gray-100 shadow rounded-2xl p-6">
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
             {groups.map((group) => (
