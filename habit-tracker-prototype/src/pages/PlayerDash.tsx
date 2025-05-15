@@ -11,7 +11,6 @@ type Player = {
 const PlayerDash: React.FC = () => {
   const { playerId } = useParams<{ playerId: string }>();
   const [player, setPlayer] = useState<Player | null>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (playerId) {

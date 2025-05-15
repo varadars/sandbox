@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { supabase } from "./lib/client";
-import ExampleCard from "./components/ui/card";
 
 function App() {
   const navigate = useNavigate();
