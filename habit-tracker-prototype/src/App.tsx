@@ -1,13 +1,8 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { supabase } from "./lib/client";
 import { ChartDonut } from "@phosphor-icons/react";
 import { LoginTab } from "@/components/LoginTab";
 
 function App() {
-  const navigate = useNavigate();
-
   return (
     <div className="flex flex-col min-h-screen gap-4">
       <Navbar />

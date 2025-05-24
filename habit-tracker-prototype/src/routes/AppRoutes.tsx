@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import GroupPage from "../pages/GroupPage";
 import PlayerDash from "../pages/PlayerDash";
-import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import PlayerProfile from "../pages/PlayerProfile.tsx";
 import App from "../App";
