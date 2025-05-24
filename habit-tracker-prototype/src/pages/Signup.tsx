@@ -34,8 +34,9 @@ const Signup: React.FC = () => {
       setErrorMsg(authError.message);
       return;
     } else if (auth) {
-      const { data: player, error: playerError } =
-        await supabase.from("players").insert({
+      const { error: playerError } = await supabase
+        .from("players")
+        .insert({
           auth_id: auth.user!.id,
           group_id: groupId,
           player_name: username,
