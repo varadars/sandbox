@@ -22,10 +22,6 @@ function AppRoutes() {
         element={<PlayerDash />}
       />{" "}
       <Route
-        path="/login"
-        element={<Login />}
-      />{" "}
-      <Route
         path="/signup"
         element={<Signup />}
       />{" "}

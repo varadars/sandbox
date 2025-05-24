@@ -1,28 +1,51 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserCircle } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/client";
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const [session, setSession] = useState<any>(null);
+  const [player, setPlayer] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchPlayer = async () => {
+      if (!session?.user?.id) return;
+      const { data, error } = await supabase
+        .from("players")
+        .select(`group_id`)
+        .eq("auth_id", session.user.id)
+        .single();
+
+      if (error) {
+        console.error(
+          "Error fetching player:",
+          error.message
+        );
+      } else {
+        setPlayer(data);
+      }
+    };
+
+    fetchPlayer();
+  }, [session]);
 
   useEffect(() => {
     const fetchSession = async () => {
       const { data, error } =
         await supabase.auth.getSession();
-      if (error) {
+      if (error)
         console.error(
           "Error getting session:",
           error.message
         );
-      } else {
-        setSession(data.session);
-      }
+      else setSession(data.session);
     };
 
     fetchSession();
 
-    // Optional: listen to auth changes and update session
     const { data: listener } =
       supabase.auth.onAuthStateChange(
         (_event, newSession) => {
@@ -36,26 +59,34 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="bg-blue-600 p-4 w-full">
-      <ul className="flex space-x-6">
+    <nav className="w-full bg-primary px-6 py-4 text-primary-foreground shadow">
+      <ul className="flex items-center gap-6">
         <li>
           <Link
-            to="/"
-            className="text-white text-lg hover:text-gray-300"
+            to={
+              session && player
+                ? `/group/${player.group_id}` // or player.player_id if that’s the route
+                : "/"
+            }
+            className="text-xl font-semibold hover:underline hover:opacity-80"
           >
             Home
           </Link>
         </li>
-        <li className="ml-auto flex items-center space-x-4">
+        <li className="ml-auto flex items-center gap-4">
           {session ? (
             <>
-              <Link to="/profile">
+              <Link
+                to="/profile"
+                aria-label="Profile"
+              >
                 <UserCircle
                   size={32}
                   weight="duotone"
                 />
               </Link>
-              <button
+              <Button
+                variant="secondary"
                 onClick={async () => {
                   const { error } =
                     await supabase.auth.signOut();
@@ -66,20 +97,15 @@ const Navbar: React.FC = () => {
                     );
                   } else {
                     setSession(null);
+                    navigate("/");
                   }
                 }}
-                className="text-black text-sm bg-blue-300 hover:bg-blue-800 hover:text-white px-3 py-1 rounded"
               >
                 Logout
-              </button>
+              </Button>
             </>
           ) : (
-            <Link
-              to="/login"
-              className="text-white text-lg hover:text-gray-300"
-            >
-              Login
-            </Link>
+            <></>
           )}
         </li>
       </ul>

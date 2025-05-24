@@ -2,44 +2,29 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { supabase } from "./lib/client";
+import { ChartDonut } from "@phosphor-icons/react";
+import { LoginTab } from "@/components/LoginTab";
 
 function App() {
   const navigate = useNavigate();
 
-  const [groupId, setGroupId] = useState("");
-  const validateGroupId = async (e: React.FormEvent) => {
-    console.log("hello");
-    e.preventDefault();
-    const { data, error } = await supabase
-      .from("groups")
-      .select(
-        `id, name, description, players (player_id, player_name)`
-      )
-      .eq("id", groupId);
-
-    if (error) {
-      console.error(error);
-    }
-
-    if (data) {
-      console.log(groupId);
-      navigate(`./login?groupId=${groupId}`);
-    }
-  };
-
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar></Navbar>
-      <h1>Enter Group Id:</h1>
-      <form onSubmit={validateGroupId}>
-        <input
-          placeholder="groupId"
-          name="groupId"
-          value={groupId}
-          onChange={(e) => setGroupId(e.target.value)}
-        />
-        <button type="submit">Submit</button>
-      </form>
+    <div className="flex flex-col min-h-screen gap-4">
+      <Navbar />
+      <div className="flex items-center flex-col my-25 min-h-screen p-4 gap-4">
+        <div className="inline-flex items-center gap-4">
+          <ChartDonut
+            color="var(--primary)"
+            size={64}
+            weight="duotone"
+          />
+          <h1 className="text-2xl font-bold">
+            Welcome to Habitual Flywheel!
+          </h1>
+        </div>
+
+        <LoginTab />
+      </div>
     </div>
   );
 }

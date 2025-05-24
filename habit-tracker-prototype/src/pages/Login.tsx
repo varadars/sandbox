@@ -17,30 +17,30 @@ const Login: React.FC = () => {
         password,
       });
 
-    console.log(data);
-
     if (error) {
       setErrorMsg(error.message);
-    } else {
-      const insertError = await supabase
-        .from("players")
-        .insert({
-          auth_id: data.user.id,
-        });
-
-      if (insertError.error) {
-        console.error(
-          "Insert failed:",
-          insertError.error.message
-        );
-        setErrorMsg(
-          "Signup succeeded but player record failed."
-        );
-      } else {
-        navigate("/"); // or welcome screen
-      }
-      navigate("/");
+      return;
     }
+
+    const authId = data.user.id;
+
+    const { data: player, error: playerError } =
+      await supabase
+        .from("players")
+        .select("group_id")
+        .eq("auth_id", authId)
+        .single();
+
+    if (playerError) {
+      console.error(
+        "Failed to fetch player:",
+        playerError.message
+      );
+      setErrorMsg("Login succeeded, but player not found.");
+      return;
+    }
+
+    navigate(`/group/${player.group_id}`);
   };
 
   return (
