@@ -5,6 +5,16 @@ import {
   Pie,
 } from "recharts";
 
+const ringCount = 7;
+const segmentsPerRing = 12; // Or whatever you want
+
+const booleanRings = Array.from({ length: ringCount }, () =>
+  Array.from(
+    { length: segmentsPerRing },
+    () => Math.random() > 0.5
+  )
+);
+
 const layers = Array.from({ length: 7 }, (_, i) => {
   const inner = i * 20;
   return {
@@ -12,27 +22,6 @@ const layers = Array.from({ length: 7 }, (_, i) => {
     outer: inner + 15,
   };
 });
-
-const sampleDataLayers = [
-  [
-    { value: 1, fill: "var(--primary)" },
-    { value: 1, fill: "#fff" },
-    { value: 1, fill: "var(--primary)" },
-    { value: 1, fill: "#fff" },
-    { value: 1, fill: "var(--primary)" },
-    { value: 1, fill: "#fff" },
-    { value: 1, fill: "var(--primary)" },
-  ],
-  [
-    { value: 1, fill: "#fff" },
-    { value: 1, fill: "var(--primary)" },
-    { value: 1, fill: "#fff" },
-    { value: 1, fill: "var(--primary)" },
-    { value: 1, fill: "#fff" },
-    { value: 1, fill: "var(--primary)" },
-    { value: 1, fill: "#fff" },
-  ],
-];
 
 async function getPlayerHabitsAndPoints(playerId: string) {
   const { data: habits, error: habitsError } =
@@ -71,10 +60,10 @@ async function generateDataLayers(
     playerId
   );
 
-  return habits.map((habit) => {
-    const segments = Array(7)
-      .fill(null)
-      .map((_, dayNumber) => {
+  const layers = Array.from(
+    { length: 7 },
+    (_, dayNumber) => {
+      return habits.map((habit) => {
         const pointExists = habit.points.some(
           (point) =>
             point.day_number === dayNumber &&
@@ -83,19 +72,22 @@ async function generateDataLayers(
 
         return {
           value: 1,
-          fill: pointExists ? "var(--primary)" : "#fff",
+          fill: pointExists
+            ? "var(--primary)"
+            : "var(--secondary)",
         };
       });
+    }
+  );
 
-    return segments;
-  });
+  return layers;
 }
 
 type Props = {
   dataLayers: any[];
 };
 
-export const WeeklyProgressChart: React.FC<Props> = ({
+export const PlayerChart: React.FC<Props> = ({
   dataLayers,
 }) => {
   return (
@@ -104,16 +96,16 @@ export const WeeklyProgressChart: React.FC<Props> = ({
       height={300}
     >
       <PieChart>
-        {sampleDataLayers.map((layerData, index) => (
+        {layers.map((layer, index) => (
           <Pie
             key={index}
-            data={layerData}
+            data={dataLayers[index % dataLayers.length]}
             dataKey="value"
             cx="50%"
             cy="50%"
-            innerRadius={layers[index]?.inner || 0}
-            outerRadius={layers[index]?.outer || 0}
-            isAnimationActive={false}
+            innerRadius={layer.inner}
+            outerRadius={layer.outer}
+            isAnimationActive={true}
           />
         ))}
       </PieChart>

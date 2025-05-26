@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import {
   getPlayerHabitsAndPoints,
   generateDataLayers,
-  WeeklyProgressChart,
+  PlayerChart,
 } from "../components/PlayerChart";
 
 type Group = {
@@ -161,10 +161,13 @@ const PlayerDash: React.FC = () => {
         <h1 className="text-4xl font-bold text-blue-600 mb-8">
           {player.player_name}
         </h1>
-        <section
+        <div
+          className="mt-5 mb-10"
           style={{ width: "100%", height: 300 }}
-          className="bg-gray-100 shadow rounded-2xl p-6 w-full max-w-4xl"
         >
+          <PlayerChart dataLayers={dataLayers} />
+        </div>
+        <section className="bg-gray-100 shadow rounded-2xl p-6 w-full max-w-4xl">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {habits?.map((habit) => (
               <Card key={habit.id}>
@@ -185,13 +188,6 @@ const PlayerDash: React.FC = () => {
             ))}
           </div>
         </section>
-        <div>
-          {dataLayers ? (
-            <WeeklyProgressChart dataLayers={dataLayers} />
-          ) : (
-            <p>Loading chart...</p>
-          )}
-        </div>
       </div>
       <div style={{ width: "100%", height: 300 }}></div>
     </div>
