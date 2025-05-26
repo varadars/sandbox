@@ -5,16 +5,6 @@ import {
   Pie,
 } from "recharts";
 
-const ringCount = 7;
-const segmentsPerRing = 12; // Or whatever you want
-
-const booleanRings = Array.from({ length: ringCount }, () =>
-  Array.from(
-    { length: segmentsPerRing },
-    () => Math.random() > 0.5
-  )
-);
-
 const layers = Array.from({ length: 7 }, (_, i) => {
   const inner = i * 20;
   return {
