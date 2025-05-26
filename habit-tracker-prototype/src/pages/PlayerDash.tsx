@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   getPlayerHabitsAndPoints,
-  generateDataLayers,
   PlayerChart,
 } from "../components/PlayerChart";
 import { Loading } from "@/components/Loading";
