@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from "../lib/client";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +10,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +25,8 @@ const Signup: React.FC = () => {
   const groupId = searchParams.get("groupId");
 
   const handleSignup = async () => {
+    //validate email, validate pwd, validate username
+    //deal with plus addressing on emails
     const { data: auth, error: authError } =
       await supabase.auth.signUp({
         email,
@@ -78,12 +81,17 @@ const Signup: React.FC = () => {
       <div className="w-[400px] mx-auto my-50">
         <Card>
           <CardHeader>
+            <CardTitle>Sign Up</CardTitle>
             <CardDescription className="italic">
               {!errorMsg && (
-                <p>
-                  Sign in here. Use the Group Code Login tab
-                  to create your account for the first time.
-                </p>
+                <div>
+                  <Link
+                    to="/"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Already have an account?
+                  </Link>
+                </div>
               )}
               {errorMsg && (
                 <p className="text-red-500 text-sm">
