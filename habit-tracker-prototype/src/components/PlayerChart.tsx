@@ -5,6 +5,8 @@ import {
   Pie,
 } from "recharts";
 
+import { useEffect, useState } from "react";
+
 const layers = Array.from({ length: 7 }, (_, i) => {
   const inner = i * 20;
   return {
@@ -74,12 +76,38 @@ async function generateDataLayers(
 }
 
 type Props = {
-  dataLayers: any[];
+  playerId: string;
+  weekNumber: number;
+  refreshTrigger: number;
 };
 
 export const PlayerChart: React.FC<Props> = ({
-  dataLayers,
+  playerId,
+  weekNumber,
+  refreshTrigger,
 }) => {
+  const [dataLayers, setDataLayers] = useState<any[][]>([]);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    async function loadData() {
+      const layers = await generateDataLayers(
+        weekNumber,
+        playerId
+      );
+      setDataLayers(layers);
+    }
+    loadData();
+  }, [playerId, weekNumber, refreshTrigger]);
+
+  useEffect(() => {
+    const timeout = setTimeout(
+      () => setHasMounted(true),
+      300
+    );
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <ResponsiveContainer
       width="100%"
@@ -95,7 +123,9 @@ export const PlayerChart: React.FC<Props> = ({
             cy="50%"
             innerRadius={layer.inner}
             outerRadius={layer.outer}
-            isAnimationActive={true}
+            isAnimationActive={
+              !hasMounted || refreshTrigger === 0
+            }
           />
         ))}
       </PieChart>

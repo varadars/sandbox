@@ -15,6 +15,8 @@ import {
   generateDataLayers,
   PlayerChart,
 } from "../components/PlayerChart";
+import { Loading } from "@/components/Loading";
+import { AddHabit } from "@/components/AddHabit";
 
 type Group = {
   id: number;
@@ -38,31 +40,19 @@ const PlayerDash: React.FC = () => {
   const [habits, setHabits] = useState<Habit[] | null>(
     null
   );
-  const [dataLayers, setDataLayers] = useState<
-    any[] | null
-  >(null);
+
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     if (!playerId) return;
 
     async function fetchAll() {
       try {
-        const currentPlayer: Player | null =
-          await getPlayerDetails(playerId!);
+        await getPlayerDetails(playerId!);
         const res = await getPlayerHabitsAndPoints(
           playerId!
         );
         setHabits(res.habits);
-
-        const weekNumber = getCurrentWeek(
-          currentPlayer?.group?.start_date!
-        );
-
-        const data = await generateDataLayers(
-          weekNumber,
-          playerId!
-        );
-        setDataLayers(data);
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
@@ -107,16 +97,31 @@ const PlayerDash: React.FC = () => {
     }
     return null;
   }
-  function getCurrentWeek(date: Date) {
-    const now = new Date();
-    const startDate = new Date(date);
-    const msInWeek = 1000 * 60 * 60 * 24 * 7;
 
-    const weekNumber =
-      Math.floor(
-        (now.getTime() - startDate.getTime()) / msInWeek
-      ) + 1;
-    return weekNumber;
+  async function addHabit(data: {
+    name: string;
+    description: string;
+  }) {
+    const { name, description } = data;
+
+    const { error } = await supabase.from("habits").insert([
+      {
+        player_id: playerId,
+        name,
+        description,
+      },
+    ]);
+
+    if (error) {
+      console.error("Failed to add habit:", error);
+      return false;
+    }
+
+    const res = await getPlayerHabitsAndPoints(playerId!);
+    setHabits(res.habits);
+    setRefreshTrigger((prev) => prev + 1);
+
+    return true;
   }
 
   async function completeHabit(habitId: number) {
@@ -144,15 +149,26 @@ const PlayerDash: React.FC = () => {
       );
       return false;
     }
+    setRefreshTrigger((prev) => prev + 1);
 
     return true;
   }
 
-  if (!player || !dataLayers) {
-    return <div>Loading...</div>;
+  function getCurrentWeek(date: Date) {
+    const now = new Date();
+    const startDate = new Date(date);
+    const msInWeek = 1000 * 60 * 60 * 24 * 7;
+
+    const weekNumber =
+      Math.floor(
+        (now.getTime() - startDate.getTime()) / msInWeek
+      ) + 1;
+    return weekNumber;
   }
 
-  console.log("dataLayers in render:", dataLayers);
+  if (!player || !habits) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -165,12 +181,23 @@ const PlayerDash: React.FC = () => {
           className="mt-5 mb-10"
           style={{ width: "100%", height: 300 }}
         >
-          <PlayerChart dataLayers={dataLayers} />
+          <PlayerChart
+            playerId={playerId!}
+            weekNumber={getCurrentWeek(
+              player.group?.start_date!
+            )}
+            refreshTrigger={refreshTrigger}
+          />
         </div>
         <section className="bg-gray-100 shadow rounded-2xl p-6 w-full max-w-4xl">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {habits?.map((habit) => (
-              <Card key={habit.id}>
+              <Card
+                onDoubleClick={() =>
+                  completeHabit(habit.id)
+                }
+                key={habit.id}
+              >
                 <CardHeader>
                   <CardTitle>{habit.name}</CardTitle>
                   <CardDescription>
@@ -186,6 +213,9 @@ const PlayerDash: React.FC = () => {
                 </CardFooter>
               </Card>
             ))}
+            {habits!.length < 9 && (
+              <AddHabit onSubmit={addHabit} />
+            )}
           </div>
         </section>
       </div>
