@@ -1,23 +1,25 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from "../lib/client";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar";
-import {
   BarChart,
   Bar,
   Rectangle,
   XAxis,
-  YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { UserCircle } from "@phosphor-icons/react";
 
 type Player = {
@@ -105,29 +107,194 @@ const GroupPage: React.FC = () => {
     navigate(`/group/${groupId}/player/${playerId}`);
   };
 
+  const totalPlayers = group.players.length;
+  const topPlayer =
+    playerPointSums.length > 0 ? playerPointSums[0] : null;
+  const totalPoints = playerPointSums.reduce(
+    (sum: number, player: any) => sum + player.uv,
+    0
+  );
+  const averagePoints =
+    totalPlayers > 0
+      ? Math.round(totalPoints / totalPlayers)
+      : 0;
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex flex-col items-center justify-center mt-12">
+      <div className="flex flex-col items-center justify-center mt-12 px-4">
         <h1 className="text-4xl font-bold text-blue-600 mb-8">
           {group.name}
         </h1>
 
-        <section className="bg-gray-100 shadow rounded-2xl p-6 w-full max-w-4xl">
-          <h2 className="text-2xl font-semibold mb-4">
-            Description
-          </h2>
-          <p className="mb-8">{group.description}</p>
+        {/* Stats Cards Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 w-full max-w-6xl mb-8">
+          {" "}
+          <Card className="">
+            <CardHeader className="relative">
+              <CardDescription>
+                Total Players
+              </CardDescription>
+              <CardTitle className="text-2xl md:text-3xl font-semibold tabular-nums">
+                {totalPlayers}
+              </CardTitle>
+            </CardHeader>
+            <CardFooter className="flex-col items-start gap-1 text-sm">
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                Active members
+              </div>
+              <div className="text-muted-foreground">
+                Engaged community
+              </div>
+            </CardFooter>
+          </Card>
+          <Card className="">
+            <CardHeader className="relative">
+              <CardDescription>
+                Total Points
+              </CardDescription>
+              <CardTitle className="text-2xl md:text-3xl font-semibold tabular-nums">
+                {totalPoints.toLocaleString()}
+              </CardTitle>
+            </CardHeader>
+            <CardFooter className="flex-col items-start gap-1 text-sm">
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                Combined score
+              </div>
+              <div className="text-muted-foreground">
+                Group performance
+              </div>
+            </CardFooter>
+          </Card>
+          <Card className="">
+            <CardHeader className="relative">
+              <CardDescription>
+                Average Points
+              </CardDescription>
+              <CardTitle className="text-2xl md:text-3xl font-semibold tabular-nums">
+                {averagePoints}
+              </CardTitle>
+            </CardHeader>
+            <CardFooter className="flex-col items-start gap-1 text-sm">
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                Per player average
+              </div>
+              <div className="text-muted-foreground">
+                Skill level indicator
+              </div>
+            </CardFooter>
+          </Card>
+          <Card className="">
+            <CardHeader className="relative">
+              <CardDescription>Top Player</CardDescription>
+              <CardTitle className="text-2xl md:text-3xl font-semibold tabular-nums">
+                {topPlayer ? topPlayer.uv : 0}
+              </CardTitle>
+            </CardHeader>
+            <CardFooter className="flex-col items-start gap-1 text-sm">
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                {topPlayer ? topPlayer.name : "No data"}
+              </div>
+              <div className="text-muted-foreground">
+                Leading performance
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
 
-          <h2 className="text-2xl font-semibold mb-4">
-            Players
-          </h2>
-          <ul className="flex gap-4">
-            {group.players.map((player) => (
-              <li key={player.player_id}>
+        {/* Leaderboard Card */}
+        <Card
+          className="@container/card mb-8 w-full max-w-6xl "
+          data-slot="card"
+        >
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold">
+              Leaderboard
+            </CardTitle>
+            <CardDescription>
+              Performance comparison across all players
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="pt-0">
+            <div className="w-full h-[300px]">
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+              >
+                <BarChart
+                  width={150}
+                  height={40}
+                  data={playerPointSums}
+                >
+                  <XAxis
+                    dataKey="name"
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    content={({
+                      payload,
+                      label,
+                      active,
+                    }) => {
+                      if (!active || !payload?.length)
+                        return null;
+
+                      return (
+                        <div className="rounded-lg border bg-white p-2 shadow text-sm">
+                          <p className="font-medium">
+                            {label}
+                          </p>
+                          {payload.map((entry) => (
+                            <p
+                              key={entry.name}
+                              className="text-muted-foreground"
+                            >
+                              {entry.name}: {entry.value}
+                            </p>
+                          ))}
+                        </div>
+                      );
+                    }}
+                    cursor={{ fill: "transparent" }}
+                  />
+                  <Bar
+                    dataKey="uv"
+                    name="Total Points"
+                    fill="var(--primary)"
+                    radius={[4, 4, 0, 0]}
+                    barSize={40}
+                    activeBar={
+                      <Rectangle
+                        fill="var(--primary)"
+                        stroke="black"
+                      />
+                    }
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardFooter>
+        </Card>
+        {/* Players Card */}
+        <Card
+          className="@container/card mb-8 w-full max-w-6xl "
+          data-slot="card"
+        >
+          <CardHeader>
+            <CardTitle className="text-2xl font-semibold">
+              Players
+            </CardTitle>
+            <CardDescription>
+              Access individual player data
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="pt-0">
+            <div className="flex flex-wrap gap-4 w-full">
+              {group.players.map((player) => (
                 <Button
+                  key={player.player_id}
                   variant="outline"
-                  className="rounded-lg"
+                  className="rounded-lg flex items-center gap-2"
                   onClick={() =>
                     handleClick(group.id, player.player_id)
                   }
@@ -135,80 +302,19 @@ const GroupPage: React.FC = () => {
                   <UserCircle
                     color="var(--primary)"
                     weight="duotone"
-                    className="w-15 h-15 m-0 p-0"
+                    className="w-5 h-5"
                   />
                   <span className="text-md">
                     {player.player_name}
                   </span>
                 </Button>
-              </li>
-            ))}
-          </ul>
-          <h2 className="text-2xl font-semibold mt-8 mb-4">
-            Leaderboard
-          </h2>
-          <div
-            className="mt-5 mb-10"
-            style={{ width: "100%", height: 300 }}
-          >
-            <ResponsiveContainer
-              width="100%"
-              height="100%"
-            >
-              <BarChart
-                width={150}
-                height={40}
-                data={playerPointSums}
-              >
-                <XAxis
-                  dataKey="name"
-                  tickLine={false}
-                />
-                <Tooltip
-                  content={({ payload, label, active }) => {
-                    if (!active || !payload?.length)
-                      return null;
-
-                    return (
-                      <div className="rounded-lg border bg-white p-2 shadow text-sm">
-                        <p className="font-medium">
-                          {label}
-                        </p>
-                        {payload.map((entry) => (
-                          <p
-                            key={entry.name}
-                            className="text-muted-foreground"
-                          >
-                            {entry.name}: {entry.value}
-                          </p>
-                        ))}
-                      </div>
-                    );
-                  }}
-                  cursor={{ fill: "transparent" }}
-                />
-
-                <Bar
-                  dataKey="uv"
-                  name="Total Points"
-                  fill="var(--primary)"
-                  radius={[4, 4, 0, 0]}
-                  barSize={40}
-                  activeBar={
-                    <Rectangle
-                      fill="var(--primary)"
-                      stroke="black"
-                    />
-                  }
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-        <div className="h-[300px]"></div>
+              ))}
+            </div>
+          </CardFooter>
+        </Card>
+        <div className="h-[100px]"></div>
       </div>
     </div>
   );
 };
-
 export default GroupPage;
