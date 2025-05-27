@@ -8,49 +8,74 @@ import {
 
 import { useEffect, useState } from "react";
 
-const layers = Array.from({ length: 7 }, (_, i) => {
-  const inner = i * 20;
-  return {
-    inner,
-    outer: inner + 15,
-  };
-});
-
-async function getPlayerHabitsAndPoints(playerId: string) {
+async function getPlayerHabits(playerId: string) {
   const { data: habits, error: habitsError } =
     await supabase
       .from("habits")
-      .select(
-        `
-    id,
-    name,
-    description,
-    points (
-      id,
-      day_number,
-      week_number,
-      created_at
-    )
-  `
-      )
+      .select("id, name, description")
       .eq("player_id", playerId);
 
-  if (habitsError) {
+  if (habitsError || !habits) {
     console.error(
       "Failed to fetch habits.",
-      habitsError.message
+      habitsError?.message
     );
-    return { habits: [] };
+    return [];
   }
-  return { habits };
+
+  return habits;
+}
+
+async function getPlayerPointsByWeek(
+  playerId: string,
+  weekNumber: number
+) {
+  const { data: habits, error: habitsError } =
+    await supabase
+      .from("habits")
+      .select("id, name, description")
+      .eq("player_id", playerId);
+
+  if (habitsError || !habits) {
+    console.error(
+      "Failed to fetch habits.",
+      habitsError?.message
+    );
+    return [];
+  }
+
+  const habitIds = habits.map((h) => h.id);
+
+  const { data: points, error: pointsError } =
+    await supabase
+      .from("points")
+      .select("id, habit_id, day_number, week_number")
+      .in("habit_id", habitIds)
+      .eq("week_number", weekNumber);
+
+  if (pointsError || !points) {
+    console.error(
+      "Failed to fetch points.",
+      pointsError?.message
+    );
+    return [];
+  }
+
+  const habitsWithPoints = habits.map((habit) => ({
+    ...habit,
+    points: points.filter((p) => p.habit_id === habit.id),
+  }));
+
+  return habitsWithPoints;
 }
 
 async function generateDataLayers(
   weekNumber: number,
   playerId: string
 ) {
-  const { habits } = await getPlayerHabitsAndPoints(
-    playerId
+  const habits = await getPlayerPointsByWeek(
+    playerId,
+    weekNumber
   );
 
   const layers = Array.from(
@@ -116,20 +141,25 @@ export const PlayerChart: React.FC<Props> = ({
       height={300}
     >
       <PieChart>
-        {layers.map((layer, index) => (
-          <Pie
-            key={index}
-            data={dataLayers[index % dataLayers.length]}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            innerRadius={layer.inner}
-            outerRadius={layer.outer}
-            isAnimationActive={
-              !hasMounted || refreshTrigger === 0
-            }
-          />
-        ))}
+        {dataLayers.map((layerData, index) => {
+          const inner = index * 20;
+          const outer = inner + 15;
+
+          return (
+            <Pie
+              key={index}
+              data={layerData}
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              innerRadius={inner}
+              outerRadius={outer}
+              isAnimationActive={
+                !hasMounted || refreshTrigger === 0
+              }
+            />
+          );
+        })}
         <Tooltip
           content={({ payload, label, active }) => {
             if (!active || !payload?.length) return null;
@@ -155,4 +185,8 @@ export const PlayerChart: React.FC<Props> = ({
   );
 };
 
-export { getPlayerHabitsAndPoints, generateDataLayers };
+export {
+  getPlayerPointsByWeek,
+  getPlayerHabits,
+  generateDataLayers,
+};

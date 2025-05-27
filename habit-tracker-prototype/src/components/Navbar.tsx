@@ -73,6 +73,16 @@ const Navbar: React.FC = () => {
             Home
           </Link>
         </li>
+        <li>
+          {session && player && (
+            <Link
+              to={`/group/${player.group_id}/player/${player.player_id}/progress`}
+              className="text-xl font-semibold hover:underline hover:opacity-80"
+            >
+              My Progress
+            </Link>
+          )}
+        </li>
         <li className="ml-auto flex items-center gap-4">
           {session ? (
             <>

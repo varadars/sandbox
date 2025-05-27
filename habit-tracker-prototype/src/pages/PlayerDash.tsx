@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  getPlayerHabitsAndPoints,
+  getPlayerHabits,
   PlayerChart,
 } from "../components/PlayerChart";
 import { Loading } from "@/components/Loading";
@@ -57,10 +57,8 @@ const PlayerDash: React.FC = () => {
           );
         }
 
-        const res = await getPlayerHabitsAndPoints(
-          playerId!
-        );
-        setHabits(res.habits);
+        const res = await getPlayerHabits(playerId!);
+        setHabits(res);
       } catch (error) {
         console.error(error);
       }
@@ -125,8 +123,11 @@ const PlayerDash: React.FC = () => {
       return false;
     }
 
-    const res = await getPlayerHabitsAndPoints(playerId!);
-    setHabits(res.habits);
+    const res = await getPlayerHabits(
+      playerId!,
+      weekNumber.current!
+    );
+    setHabits(res);
     setRefreshTrigger((prev) => prev + 1);
 
     return true;
