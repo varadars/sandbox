@@ -13,7 +13,8 @@ async function getPlayerHabits(playerId: string) {
     await supabase
       .from("habits")
       .select("id, name, description")
-      .eq("player_id", playerId);
+      .eq("player_id", playerId)
+      .order("id");
 
   if (habitsError || !habits) {
     console.error(
@@ -24,6 +25,64 @@ async function getPlayerHabits(playerId: string) {
   }
 
   return habits;
+}
+
+async function getPlayerHabitCompletion(
+  playerId: string,
+  weekNumber: number
+) {
+  const dayNumber = new Date().getDay();
+
+  const { data: habits, error: habitsError } =
+    await supabase
+      .from("habits")
+      .select("id, name, description")
+      .eq("player_id", playerId)
+      .order("id");
+
+  if (habitsError || !habits) {
+    console.error(
+      "Failed to fetch habits.",
+      habitsError?.message
+    );
+    return [];
+  }
+
+  const habitIds = habits.map((h) => h.id);
+
+  const { data: completions, error: completionsError } =
+    await supabase
+      .from("points")
+      .select("habit_id")
+      .in("habit_id", habitIds)
+      .eq("week_number", weekNumber)
+      .eq("day_number", dayNumber);
+
+  if (completionsError || !completions) {
+    console.error(
+      "Failed to fetch completions.",
+      completionsError?.message
+    );
+    return habits.map((habit) => ({
+      ...habit,
+      completed: false,
+    }));
+  }
+
+  const completedIds = new Set(
+    completions.map((c) => c.habit_id)
+  );
+
+  return habits
+    .sort(
+      (a, b) =>
+        Number(completedIds.has(a.id)) -
+        Number(completedIds.has(b.id))
+    )
+    .map((habit) => ({
+      ...habit,
+      completed: completedIds.has(habit.id),
+    }));
 }
 
 async function getPlayerPointsByWeek(
@@ -187,6 +246,6 @@ export const PlayerChart: React.FC<Props> = ({
 
 export {
   getPlayerPointsByWeek,
-  getPlayerHabits,
+  getPlayerHabitCompletion,
   generateDataLayers,
 };

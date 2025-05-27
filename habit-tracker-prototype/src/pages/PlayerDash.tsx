@@ -11,11 +11,24 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  getPlayerHabits,
+  getPlayerHabitCompletion,
   PlayerChart,
 } from "../components/PlayerChart";
 import { Loading } from "@/components/Loading";
 import { AddHabit } from "@/components/AddHabit";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { CheckFat } from "@phosphor-icons/react";
 
 type Group = {
   id: number;
@@ -31,6 +44,7 @@ type Habit = {
   id: number;
   name: string;
   description: string;
+  completed: boolean;
 };
 
 const PlayerDash: React.FC = () => {
@@ -39,8 +53,13 @@ const PlayerDash: React.FC = () => {
   const [habits, setHabits] = useState<Habit[] | null>(
     null
   );
+  const [selectedHabit, setSelectedHabit] =
+    useState<Habit | null>(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const weekNumber = useRef<number | null>(null);
 
@@ -57,7 +76,10 @@ const PlayerDash: React.FC = () => {
           );
         }
 
-        const res = await getPlayerHabits(playerId!);
+        const res = await getPlayerHabitCompletion(
+          playerId!,
+          weekNumber.current!
+        );
         setHabits(res);
       } catch (error) {
         console.error(error);
@@ -66,6 +88,18 @@ const PlayerDash: React.FC = () => {
 
     fetchAll();
   }, [playerId]);
+
+  function openEditDialog(habit: Habit) {
+    setSelectedHabit(habit);
+    setName(habit.name);
+    setDescription(habit.description || "");
+  }
+
+  function clearDialog() {
+    setSelectedHabit(null);
+    setName("");
+    setDescription("");
+  }
 
   async function getPlayerDetails(playerId: string) {
     const { data, error } = await supabase
@@ -123,11 +157,37 @@ const PlayerDash: React.FC = () => {
       return false;
     }
 
-    const res = await getPlayerHabits(playerId!);
+    const res = await getPlayerHabitCompletion(
+      playerId!,
+      weekNumber.current!
+    );
     setHabits(res);
     setRefreshTrigger((prev) => prev + 1);
 
     return true;
+  }
+  async function editHabit(
+    id: number,
+    name: string,
+    description: string
+  ) {
+    const { error } = await supabase
+      .from("habits")
+      .update({ name, description })
+      .eq("id", id);
+
+    if (error) {
+      console.error(
+        "Failed to update habit:",
+        error.message
+      );
+    } else {
+      const res = await getPlayerHabitCompletion(
+        playerId!,
+        weekNumber.current!
+      );
+      setHabits(res);
+    }
   }
 
   async function completeHabit(habitId: number) {
@@ -148,9 +208,32 @@ const PlayerDash: React.FC = () => {
       );
       return false;
     }
-    setRefreshTrigger((prev) => prev + 1);
-
+    const res = await getPlayerHabitCompletion(
+      playerId!,
+      weekNumber.current!
+    );
+    setHabits(res);
     return true;
+  }
+  async function deleteHabit(id: number) {
+    const { error } = await supabase
+      .from("habits")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error(
+        "Failed to delete habit:",
+        error.message
+      );
+    } else {
+      const res = await getPlayerHabitCompletion(
+        playerId!,
+        weekNumber.current!
+      );
+      setHabits(res);
+      setRefreshTrigger((prev) => prev + 1);
+    }
   }
 
   function getCurrentWeek(date: Date) {
@@ -199,35 +282,230 @@ const PlayerDash: React.FC = () => {
             refreshTrigger={refreshTrigger}
           />
         </div>
-        <section className="bg-gray-100 shadow rounded-2xl p-6 w-full max-w-4xl">
+        <Card
+          className="@container/card mb-8 p-8 w-full max-w-6xl"
+          style={{ background: "var(--secondary)" }}
+          data-slot="card"
+        >
+          <CardHeader className="p-1 m-0">
+            <CardTitle className="text-2xl font-semibold">
+              All Habits
+            </CardTitle>
+            <CardDescription>
+              Double-click the habit to edit or delete.
+            </CardDescription>
+          </CardHeader>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {habits?.map((habit) => (
-              <Card
-                // onDoubleClick={() =>
-                //   completeHabit(habit.id)
-                // }
+            {habits.map((habit) => (
+              <Dialog
                 key={habit.id}
+                open={selectedHabit?.id === habit.id}
+                onOpenChange={(open) =>
+                  !open && clearDialog()
+                }
               >
-                <CardHeader>
-                  <CardTitle>{habit.name}</CardTitle>
-                  <CardDescription>
-                    {habit.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter>
-                  <Button
-                    onClick={() => completeHabit(habit.id)}
+                <DialogTrigger asChild>
+                  {habit.completed ? (
+                    <DialogTrigger asChild>
+                      <Card
+                        className="cursor-pointer"
+                        onDoubleClick={() =>
+                          openEditDialog(habit)
+                        }
+                      >
+                        <CardHeader>
+                          <CardTitle>
+                            {habit.name}
+                          </CardTitle>
+                          <CardDescription>
+                            {habit.description}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardFooter>
+                          <p
+                            className="inline-block mt-2 px-3 py-1 rounded-sm text-sm font-medium"
+                            style={{
+                              backgroundColor:
+                                "var(--secondary)",
+                              color: "var(--primary)",
+                              boxShadow:
+                                "0 1px 3px var(--shadow, rgba(0,0,0,0.1))",
+                            }}
+                          >
+                            Completed
+                          </p>
+                        </CardFooter>
+                      </Card>
+                    </DialogTrigger>
+                  ) : (
+                    <DialogTrigger asChild>
+                      <Card
+                        className="cursor-pointer"
+                        onDoubleClick={() =>
+                          openEditDialog(habit)
+                        }
+                      >
+                        <CardHeader>
+                          <CardTitle>
+                            {habit.name}
+                          </CardTitle>
+                          <CardDescription>
+                            {habit.description}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardFooter className="flex items-center justify-between gap-4">
+                          <p
+                            className="px-3 py-1 rounded-sm text-sm font-medium"
+                            style={{
+                              backgroundColor:
+                                "var(--secondary)",
+                              color: "var(--primary)",
+                              boxShadow:
+                                "0 1px 3px var(--shadow, rgba(0,0,0,0.1))",
+                            }}
+                          >
+                            Incomplete
+                          </p>
+                          <Button
+                            className="h-auto px-0 py-1 rounded-xl"
+                            onClick={() =>
+                              completeHabit(habit.id)
+                            }
+                          >
+                            <CheckFat
+                              className="mx-0"
+                              size={16}
+                            />
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    </DialogTrigger>
+                  )}
+                </DialogTrigger>
+
+                <DialogContent className="sm:max-w-[425px]">
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      editHabit(
+                        habit.id,
+                        name,
+                        description
+                      );
+                      clearDialog();
+                    }}
                   >
-                    Mark as Completed
-                  </Button>
-                </CardFooter>
-              </Card>
+                    <DialogHeader>
+                      <DialogTitle>Edit Habit</DialogTitle>
+                      <DialogDescription>
+                        Update the name or description, or
+                        delete your habit.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="grid gap-4 py-4">
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label
+                          htmlFor="name"
+                          className="text-right"
+                        >
+                          Name
+                        </Label>
+                        <Input
+                          id="name"
+                          className="col-span-3"
+                          value={name}
+                          onChange={(e) =>
+                            setName(e.target.value)
+                          }
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-4 items-start gap-4">
+                        <Label
+                          htmlFor="description"
+                          className="text-right"
+                        >
+                          Description
+                        </Label>
+                        <Textarea
+                          id="description"
+                          className="col-span-3 resize-none"
+                          rows={4}
+                          value={description}
+                          onChange={(e) =>
+                            setDescription(e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <DialogFooter className="flex justify-between">
+                      <Button type="submit">
+                        Save Changes
+                      </Button>
+                      <>
+                        <Button
+                          variant="destructive"
+                          type="button"
+                          onClick={() =>
+                            setShowConfirm(true)
+                          }
+                        >
+                          Delete
+                        </Button>
+
+                        <Dialog
+                          open={showConfirm}
+                          onOpenChange={setShowConfirm}
+                        >
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>
+                                Confirm Deletion
+                              </DialogTitle>
+                              <DialogDescription>
+                                Are you absolutely sure you
+                                want to delete this habit?
+                                All associated data will be
+                                lost forever.
+                              </DialogDescription>
+                            </DialogHeader>
+
+                            <div className="flex justify-end gap-4 mt-4">
+                              <Button
+                                variant="ghost"
+                                onClick={() =>
+                                  setShowConfirm(false)
+                                }
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                onClick={() => {
+                                  deleteHabit(habit.id);
+                                  clearDialog(); // your close form dialog function
+                                  setShowConfirm(false);
+                                }}
+                              >
+                                Yes, Delete
+                              </Button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      </>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
             ))}
+
             {habits!.length < 9 && (
               <AddHabit onSubmit={addHabit} />
             )}
           </div>
-        </section>
+        </Card>
       </div>
       <div style={{ width: "100%", height: 300 }}></div>
     </div>
