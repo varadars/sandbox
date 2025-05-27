@@ -40,7 +40,7 @@ export function AddHabit({
       <DialogTrigger asChild>
         <Card className="m-0 p-0 cursor-pointer">
           <Button
-            className="w-full h-full"
+            className="w-full h-full text-gray-500"
             variant="ghost"
             type="button"
             id="close-dialog"
@@ -55,7 +55,7 @@ export function AddHabit({
             <DialogTitle>Add New Habit</DialogTitle>
             <DialogDescription>
               Set a name and description to track daily
-              progress. Max 6 habits.
+              progress. Max 9 habits.
             </DialogDescription>
           </DialogHeader>
 

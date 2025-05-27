@@ -3,6 +3,7 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
+  Tooltip,
 } from "recharts";
 
 import { useEffect, useState } from "react";
@@ -63,6 +64,7 @@ async function generateDataLayers(
         );
 
         return {
+          name: habit.name,
           value: 1,
           fill: pointExists
             ? "var(--primary)"
@@ -128,6 +130,26 @@ export const PlayerChart: React.FC<Props> = ({
             }
           />
         ))}
+        <Tooltip
+          content={({ payload, label, active }) => {
+            if (!active || !payload?.length) return null;
+
+            return (
+              <div className="rounded-lg border bg-white p-2 shadow text-sm">
+                <p className="font-medium">{label}</p>
+                {payload.map((entry) => (
+                  <p
+                    key={entry.name}
+                    className="text-muted-foreground"
+                  >
+                    {entry.name}
+                  </p>
+                ))}
+              </div>
+            );
+          }}
+          cursor={{ fill: "transparent" }}
+        />
       </PieChart>
     </ResponsiveContainer>
   );
