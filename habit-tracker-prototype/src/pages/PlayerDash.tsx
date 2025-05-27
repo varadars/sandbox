@@ -194,9 +194,9 @@ const PlayerDash: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {habits?.map((habit) => (
               <Card
-                onDoubleClick={() =>
-                  completeHabit(habit.id)
-                }
+                // onDoubleClick={() =>
+                //   completeHabit(habit.id)
+                // }
                 key={habit.id}
               >
                 <CardHeader>
