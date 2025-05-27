@@ -19,7 +19,7 @@ const PlayerProgress: React.FC = () => {
   const { playerId } = useParams<{ playerId: string }>();
   const [player, setPlayer] = useState<Player | null>(null);
 
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [refreshTrigger] = useState(0);
 
   useEffect(() => {
     if (!playerId) return;
@@ -63,18 +63,6 @@ const PlayerProgress: React.FC = () => {
         group: data.group_id as unknown as Group,
       });
     }
-  }
-
-  function getCurrentWeek(date: Date) {
-    const now = new Date();
-    const startDate = new Date(date);
-    const msInWeek = 1000 * 60 * 60 * 24 * 7;
-
-    const weekNumber =
-      Math.floor(
-        (now.getTime() - startDate.getTime()) / msInWeek
-      ) + 1;
-    return weekNumber;
   }
 
   if (!player) {

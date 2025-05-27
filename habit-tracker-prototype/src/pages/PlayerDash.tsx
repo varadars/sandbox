@@ -123,10 +123,7 @@ const PlayerDash: React.FC = () => {
       return false;
     }
 
-    const res = await getPlayerHabits(
-      playerId!,
-      weekNumber.current!
-    );
+    const res = await getPlayerHabits(playerId!);
     setHabits(res);
     setRefreshTrigger((prev) => prev + 1);
 
@@ -176,11 +173,22 @@ const PlayerDash: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <div className="flex flex-col items-center justify-center mt-12">
-        <h1 className="text-4xl font-bold text-blue-600 mb-8">
+        <h1 className="text-4xl font-bold text-blue-600">
           {player.current?.player_name}
         </h1>
+        <p
+          className="inline-block mt-2 px-3 py-1 rounded-md text-xs font-medium  mb-6"
+          style={{
+            backgroundColor: "var(--secondary)",
+            color: "var(--primary)",
+            boxShadow:
+              "0 1px 3px var(--shadow, rgba(0,0,0,0.1))",
+          }}
+        >
+          Week {weekNumber.current}
+        </p>
         <div
-          className="mt-5 mb-10"
+          className="mt-5 mb-10 text-center"
           style={{ width: "100%", height: 300 }}
         >
           <PlayerChart
