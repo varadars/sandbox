@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from "../lib/client";
@@ -35,12 +35,14 @@ type Habit = {
 
 const PlayerDash: React.FC = () => {
   const { playerId } = useParams<{ playerId: string }>();
-  const [player, setPlayer] = useState<Player | null>(null);
+  const player = useRef<Player | null>(null);
   const [habits, setHabits] = useState<Habit[] | null>(
     null
   );
 
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const weekNumber = useRef<number | null>(null);
 
   useEffect(() => {
     if (!playerId) return;
@@ -48,12 +50,19 @@ const PlayerDash: React.FC = () => {
     async function fetchAll() {
       try {
         await getPlayerDetails(playerId!);
+        const startDate = player.current?.group?.start_date;
+        if (startDate) {
+          weekNumber.current = getCurrentWeek(
+            new Date(startDate)
+          );
+        }
+
         const res = await getPlayerHabitsAndPoints(
           playerId!
         );
         setHabits(res.habits);
       } catch (error) {
-        console.error("Failed to fetch data:", error);
+        console.error(error);
       }
     }
 
@@ -82,11 +91,11 @@ const PlayerDash: React.FC = () => {
     }
 
     if (data) {
-      setPlayer({
+      player.current = {
         player_id: data.player_id,
         player_name: data.player_name,
         group: data.group_id as unknown as Group,
-      });
+      };
 
       return {
         player_id: data.player_id,
@@ -124,20 +133,13 @@ const PlayerDash: React.FC = () => {
   }
 
   async function completeHabit(habitId: number) {
-    const currentPlayer: Player | null =
-      await getPlayerDetails(playerId!);
-
-    const startDate = new Date(
-      currentPlayer!.group!.start_date
-    );
     const now = new Date();
-
     const { error } = await supabase.from("points").insert([
       {
         amount: 10,
         habit_id: habitId,
         day_number: now.getDay(),
-        week_number: getCurrentWeek(startDate!),
+        week_number: weekNumber.current,
       },
     ]);
 
@@ -174,7 +176,7 @@ const PlayerDash: React.FC = () => {
       <Navbar />
       <div className="flex flex-col items-center justify-center mt-12">
         <h1 className="text-4xl font-bold text-blue-600 mb-8">
-          {player.player_name}
+          {player.current?.player_name}
         </h1>
         <div
           className="mt-5 mb-10"
@@ -183,7 +185,7 @@ const PlayerDash: React.FC = () => {
           <PlayerChart
             playerId={playerId!}
             weekNumber={getCurrentWeek(
-              player.group?.start_date!
+              player.current?.group?.start_date!
             )}
             refreshTrigger={refreshTrigger}
           />

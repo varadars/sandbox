@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
       if (!session?.user?.id) return;
       const { data, error } = await supabase
         .from("players")
-        .select(`group_id`)
+        .select(`player_id, group_id`)
         .eq("auth_id", session.user.id)
         .single();
 
@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
           <Link
             to={
               session && player
-                ? `/group/${player.group_id}` // or player.player_id if that’s the route
+                ? `/group/${player.group_id}`
                 : "/"
             }
             className="text-xl font-semibold hover:underline hover:opacity-80"
@@ -77,7 +77,11 @@ const Navbar: React.FC = () => {
           {session ? (
             <>
               <Link
-                to="/profile"
+                to={
+                  session && player
+                    ? `/group/${player.group_id}/player/${player.player_id}`
+                    : "/"
+                }
                 aria-label="Profile"
               >
                 <UserCircle
