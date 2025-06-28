@@ -4,6 +4,7 @@ import PlayerDash from "../pages/PlayerDash";
 import Signup from "../pages/Signup";
 import PlayerProfile from "../pages/PlayerProfile.tsx";
 import PlayerProgress from "../pages/PlayerProgress.tsx";
+import ProtectedRoute from "./ProtectedRoute.tsx";
 import App from "../App";
 
 function AppRoutes() {
@@ -15,15 +16,27 @@ function AppRoutes() {
       />
       <Route
         path="/group/:groupId"
-        element={<GroupPage />}
+        element={
+          <ProtectedRoute>
+            <GroupPage />
+          </ProtectedRoute>
+        }
       />
       <Route
         path="/group/:groupId/player/:playerId"
-        element={<PlayerDash />}
+        element={
+          <ProtectedRoute>
+            <PlayerDash />
+          </ProtectedRoute>
+        }
       />
       <Route
         path="/group/:groupId/player/:playerId/progress"
-        element={<PlayerProgress />}
+        element={
+          <ProtectedRoute>
+            <PlayerProgress />
+          </ProtectedRoute>
+        }
       />
       <Route
         path="/signup"

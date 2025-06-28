@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { supabase } from "../lib/client";
 import {
@@ -48,6 +48,7 @@ type Habit = {
 };
 
 const PlayerDash: React.FC = () => {
+  const navigate = useNavigate();
   const { playerId } = useParams<{ playerId: string }>();
   const player = useRef<Player | null>(null);
   const [habits, setHabits] = useState<Habit[] | null>(
@@ -119,7 +120,9 @@ const PlayerDash: React.FC = () => {
 
     if (error) {
       console.error(error);
-      return null;
+
+      //if there are any errors fetching the player navigate to home
+      navigate("/");
     }
 
     if (data) {
@@ -213,6 +216,8 @@ const PlayerDash: React.FC = () => {
       weekNumber.current!
     );
     setHabits(res);
+    setRefreshTrigger((prev) => prev + 1);
+
     return true;
   }
   async function deleteHabit(id: number) {
@@ -255,6 +260,7 @@ const PlayerDash: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <div className="h-15"></div>
       <div className="flex flex-col items-center justify-center mt-12">
         <h1 className="text-4xl font-bold text-blue-600">
           {player.current?.player_name}
@@ -272,7 +278,7 @@ const PlayerDash: React.FC = () => {
         </p>
         <div
           className="mt-5 mb-10 text-center"
-          style={{ width: "100%", height: 300 }}
+          style={{ width: "100%", height: 315 }}
         >
           <PlayerChart
             playerId={playerId!}
@@ -289,7 +295,7 @@ const PlayerDash: React.FC = () => {
         >
           <CardHeader className="p-1 m-0">
             <CardTitle className="text-2xl font-semibold">
-              All Habits
+              Today's Habits
             </CardTitle>
             <CardDescription>
               Double-click the habit to edit or delete.
@@ -305,69 +311,43 @@ const PlayerDash: React.FC = () => {
                 }
               >
                 <DialogTrigger asChild>
-                  {habit.completed ? (
-                    <DialogTrigger asChild>
-                      <Card
-                        className="cursor-pointer"
-                        onDoubleClick={() =>
-                          openEditDialog(habit)
+                  <DialogTrigger asChild>
+                    <Card
+                      className="cursor-pointer"
+                      onDoubleClick={() =>
+                        openEditDialog(habit)
+                      }
+                    >
+                      <CardHeader>
+                        <CardTitle>{habit.name}</CardTitle>
+                        <CardDescription>
+                          {habit.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardFooter
+                        className={
+                          habit.completed
+                            ? ""
+                            : "flex items-center justify-between gap-4"
                         }
                       >
-                        <CardHeader>
-                          <CardTitle>
-                            {habit.name}
-                          </CardTitle>
-                          <CardDescription>
-                            {habit.description}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardFooter>
-                          <p
-                            className="inline-block mt-2 px-3 py-1 rounded-sm text-sm font-medium"
-                            style={{
-                              backgroundColor:
-                                "var(--secondary)",
-                              color: "var(--primary)",
-                              boxShadow:
-                                "0 1px 3px var(--shadow, rgba(0,0,0,0.1))",
-                            }}
-                          >
-                            Completed
-                          </p>
-                        </CardFooter>
-                      </Card>
-                    </DialogTrigger>
-                  ) : (
-                    <DialogTrigger asChild>
-                      <Card
-                        className="cursor-pointer"
-                        onDoubleClick={() =>
-                          openEditDialog(habit)
-                        }
-                      >
-                        <CardHeader>
-                          <CardTitle>
-                            {habit.name}
-                          </CardTitle>
-                          <CardDescription>
-                            {habit.description}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardFooter className="flex items-center justify-between gap-4">
-                          <p
-                            className="px-3 py-1 rounded-sm text-sm font-medium"
-                            style={{
-                              backgroundColor:
-                                "var(--secondary)",
-                              color: "var(--primary)",
-                              boxShadow:
-                                "0 1px 3px var(--shadow, rgba(0,0,0,0.1))",
-                            }}
-                          >
-                            Incomplete
-                          </p>
+                        <p
+                          className="px-3 py-1 rounded-sm text-sm font-medium"
+                          style={{
+                            backgroundColor:
+                              "var(--secondary)",
+                            color: "var(--primary)",
+                            boxShadow:
+                              "0 1px 3px var(--shadow, rgba(0,0,0,0.1))",
+                          }}
+                        >
+                          {habit.completed
+                            ? "Completed"
+                            : "Incomplete"}
+                        </p>
+                        {!habit.completed && (
                           <Button
-                            className="h-auto px-0 py-1 rounded-xl"
+                            className="h-auto px-0 py-2 rounded-xl"
                             onClick={() =>
                               completeHabit(habit.id)
                             }
@@ -377,10 +357,10 @@ const PlayerDash: React.FC = () => {
                               size={16}
                             />
                           </Button>
-                        </CardFooter>
-                      </Card>
-                    </DialogTrigger>
-                  )}
+                        )}
+                      </CardFooter>
+                    </Card>
+                  </DialogTrigger>
                 </DialogTrigger>
 
                 <DialogContent className="sm:max-w-[425px]">

@@ -43,6 +43,7 @@ const Signup: React.FC = () => {
           auth_id: auth.user!.id,
           group_id: groupId,
           player_name: username,
+          email: email,
         });
 
       if (playerError) {

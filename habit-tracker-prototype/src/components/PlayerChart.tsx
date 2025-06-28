@@ -4,6 +4,7 @@ import {
   PieChart,
   Pie,
   Tooltip,
+  Label,
 } from "recharts";
 
 import { useEffect, useState } from "react";
@@ -201,8 +202,8 @@ export const PlayerChart: React.FC<Props> = ({
     >
       <PieChart>
         {dataLayers.map((layerData, index) => {
-          const inner = index * 20;
-          const outer = inner + 15;
+          const inner = index * 18 + 30;
+          const outer = inner + 13;
 
           return (
             <Pie
@@ -213,10 +214,19 @@ export const PlayerChart: React.FC<Props> = ({
               cy="50%"
               innerRadius={inner}
               outerRadius={outer}
+              paddingAngle={2}
               isAnimationActive={
                 !hasMounted || refreshTrigger === 0
               }
-            />
+            >
+              {/* <Label
+                width={40}
+                position="center"
+                className="text-xl"
+              >
+                Sustainability
+              </Label> */}
+            </Pie>
           );
         })}
         <Tooltip

@@ -73,15 +73,15 @@ const PlayerProgress: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <div className="flex flex-col items-center justify-center mt-12">
-        <h1 className="text-4xl font-bold text-blue-600 mb-8">
+        <h1 className="text-4xl font-bold text-blue-600 mb-20">
           {player.player_name}
         </h1>
-        <div className="flex flex-wrap justify-center w-[1200px] gap-y-20">
-          {[...Array(8)].map((_, index) => (
+        <div className="flex flex-wrap justify-center w-[1400px] gap-x-5">
+          {[...Array(12)].map((_, index) => (
             <div
               key={index}
               className="w-1/4 p-1 text-center"
-              style={{ height: 300 }}
+              style={{ height: 400 }}
             >
               <PlayerChart
                 playerId={playerId!}
@@ -89,7 +89,7 @@ const PlayerProgress: React.FC = () => {
                 refreshTrigger={refreshTrigger}
               />
               <p
-                className="inline-block mt-2 px-3 py-1 rounded-md text-xs font-medium"
+                className="inline-block mt-4 px-3 py-1 rounded-md text-xs font-medium"
                 style={{
                   backgroundColor: "var(--primary)",
                   color: "var(--background)",
