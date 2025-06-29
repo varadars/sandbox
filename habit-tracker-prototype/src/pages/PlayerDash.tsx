@@ -29,11 +29,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { CheckFat } from "@phosphor-icons/react";
+import { useAuth } from "@/components/AuthContext";
 
 type Group = {
   id: number;
   start_date: Date;
 };
+
 type Player = {
   player_id: string;
   player_name: string;
@@ -49,7 +51,10 @@ type Habit = {
 
 const PlayerDash: React.FC = () => {
   const navigate = useNavigate();
-  const { playerId } = useParams<{ playerId: string }>();
+  const { groupId, playerId } = useParams<{
+    groupId: string;
+    playerId: string;
+  }>();
   const player = useRef<Player | null>(null);
   const [habits, setHabits] = useState<Habit[] | null>(
     null
@@ -63,6 +68,8 @@ const PlayerDash: React.FC = () => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const weekNumber = useRef<number | null>(null);
+
+  const { player: currentPlayer } = useAuth();
 
   useEffect(() => {
     if (!playerId) return;
@@ -131,6 +138,12 @@ const PlayerDash: React.FC = () => {
         player_name: data.player_name,
         group: data.group_id as unknown as Group,
       };
+
+      if (player.current?.group?.id != Number(groupId)) {
+        navigate(
+          `/group/${groupId}/player/${currentPlayer.player_id}`
+        );
+      }
 
       return {
         player_id: data.player_id,
@@ -287,6 +300,46 @@ const PlayerDash: React.FC = () => {
             )}
             refreshTrigger={refreshTrigger}
           />
+        </div>
+        {/* Stats Cards Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4 w-full max-w-6xl mb-8">
+          {" "}
+          <Card className="">
+            <CardHeader className="relative">
+              <CardDescription>
+                Most Completed Habit
+              </CardDescription>
+              <CardTitle className="text-2xl md:text-3xl font-semibold tabular-nums">
+                {}
+              </CardTitle>
+            </CardHeader>
+            <CardFooter className="flex-col items-start gap-1 text-sm">
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                Active members
+              </div>
+              <div className="text-muted-foreground">
+                Engaged community
+              </div>
+            </CardFooter>
+          </Card>
+          <Card className="">
+            <CardHeader className="relative">
+              <CardDescription>
+                Total Points
+              </CardDescription>
+              <CardTitle className="text-2xl md:text-3xl font-semibold tabular-nums">
+                {}
+              </CardTitle>
+            </CardHeader>
+            <CardFooter className="flex-col items-start gap-1 text-sm">
+              <div className="line-clamp-1 flex gap-2 font-medium">
+                Combined score
+              </div>
+              <div className="text-muted-foreground">
+                Group performance
+              </div>
+            </CardFooter>
+          </Card>
         </div>
         <Card
           className="@container/card mb-8 p-8 w-full max-w-6xl"

@@ -1,62 +1,13 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCircle } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/client";
+import { useAuth } from "@/components/AuthContext";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
-  const [session, setSession] = useState<any>(null);
-  const [player, setPlayer] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchPlayer = async () => {
-      if (!session?.user?.id) return;
-      const { data, error } = await supabase
-        .from("players")
-        .select(`player_id, group_id`)
-        .eq("auth_id", session.user.id)
-        .single();
-
-      if (error) {
-        console.error(
-          "Error fetching player:",
-          error.message
-        );
-      } else {
-        setPlayer(data);
-      }
-    };
-
-    fetchPlayer();
-  }, [session]);
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      const { data, error } =
-        await supabase.auth.getSession();
-      if (error)
-        console.error(
-          "Error getting session:",
-          error.message
-        );
-      else setSession(data.session);
-    };
-
-    fetchSession();
-
-    const { data: listener } =
-      supabase.auth.onAuthStateChange(
-        (_event, newSession) => {
-          setSession(newSession);
-        }
-      );
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
+  const { session, player } = useAuth();
 
   return (
     <nav className="w-full bg-primary px-6 py-4 text-primary-foreground shadow">
@@ -65,18 +16,18 @@ const Navbar: React.FC = () => {
           <Link
             to={
               session && player
-                ? `/group/${player.group_id}`
+                ? `/group/${player.group.id}`
                 : "/"
             }
             className="text-xl font-semibold hover:underline hover:opacity-80"
           >
-            Home
+            {session && player ? "My Group" : "Home"}
           </Link>
         </li>
         <li>
           {session && player && (
             <Link
-              to={`/group/${player.group_id}/player/${player.player_id}/progress`}
+              to={`/group/${player.group.id}/player/${player.player_id}/progress`}
               className="text-xl font-semibold hover:underline hover:opacity-80"
             >
               My Progress
@@ -89,7 +40,7 @@ const Navbar: React.FC = () => {
               <Link
                 to={
                   session && player
-                    ? `/group/${player.group_id}/player/${player.player_id}`
+                    ? `/group/${player.group.id}/player/${player.player_id}`
                     : "/"
                 }
                 aria-label="Profile"
@@ -110,7 +61,6 @@ const Navbar: React.FC = () => {
                       error.message
                     );
                   } else {
-                    setSession(null);
                     navigate("/");
                   }
                 }}

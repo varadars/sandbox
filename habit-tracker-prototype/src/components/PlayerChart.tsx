@@ -9,23 +9,28 @@ import {
 
 import { useEffect, useState } from "react";
 
-async function getPlayerHabits(playerId: string) {
-  const { data: habits, error: habitsError } =
-    await supabase
-      .from("habits")
-      .select("id, name, description")
-      .eq("player_id", playerId)
-      .order("id");
+async function getPlayerHabitsWithPoints(playerId: string) {
+  const { data: habits, error } = await supabase
+    .from("habits")
+    .select("id, name, description, points")
+    .eq("player_id", playerId)
+    .order("id");
 
-  if (habitsError || !habits) {
+  if (error || !habits) {
     console.error(
       "Failed to fetch habits.",
-      habitsError?.message
+      error?.message
     );
     return [];
   }
 
-  return habits;
+  // Aggregate points: total points sum of all habits
+  const totalPoints = habits.reduce(
+    (sum, habit) => sum + (habit.points || 0),
+    0
+  );
+
+  return { habits, totalPoints };
 }
 
 async function getPlayerHabitCompletion(
@@ -148,12 +153,24 @@ async function generateDataLayers(
             point.week_number === weekNumber
         );
 
+        const dayNames = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        const dayName = dayNames[dayNumber].slice(0, 3);
+
         return {
           name: habit.name,
           value: 1,
           fill: pointExists
             ? "var(--primary)"
             : "var(--secondary)",
+          day: dayName,
         };
       });
     }
@@ -236,14 +253,17 @@ export const PlayerChart: React.FC<Props> = ({
             return (
               <div className="rounded-lg border bg-white p-2 shadow text-sm">
                 <p className="font-medium">{label}</p>
-                {payload.map((entry) => (
-                  <p
-                    key={entry.name}
-                    className="text-muted-foreground"
-                  >
-                    {entry.name}
-                  </p>
-                ))}
+                {payload.map((entry) => {
+                  const { name, payload: data } = entry;
+                  return (
+                    <p
+                      key={entry.name}
+                      className="text-muted-foreground"
+                    >
+                      {data.day}: {name}
+                    </p>
+                  );
+                })}
               </div>
             );
           }}
@@ -255,6 +275,7 @@ export const PlayerChart: React.FC<Props> = ({
 };
 
 export {
+  getPlayerHabitsWithPoints,
   getPlayerPointsByWeek,
   getPlayerHabitCompletion,
   generateDataLayers,

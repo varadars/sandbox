@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ChartDonut } from "@phosphor-icons/react";
 import { LoginTab } from "@/components/LoginTab";
 import { useNavigate } from "react-router-dom";
-
+import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/lib/client";
 
 type Player = {
@@ -65,13 +65,13 @@ function App() {
     };
   }, []);
 
-  if (player) {
-    navigate(
-      `/group/${player!.group_id}/player/${
-        player!.player_id
-      }`
-    );
-  }
+  useEffect(() => {
+    if (player) {
+      navigate(
+        `/group/${player.group_id}/player/${player.player_id}`
+      );
+    }
+  }, [player, navigate]);
 
   return (
     <div className="flex flex-col min-h-screen gap-4">
@@ -90,6 +90,7 @@ function App() {
 
         <LoginTab />
       </div>
+      <Toaster richColors />
     </div>
   );
 }
