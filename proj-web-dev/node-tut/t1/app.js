@@ -1,9 +1,8 @@
-const names = require('./names')
-const sayHi = require('./utils')
-const genericData = require('./alt-flavor')
+const http = require("http");
 
-require('./mind-gren')
+const server = http.createServer((req, res) => {
+  res.write("Welcome to our home page");
+  res.end;
+});
 
-for (const name in names) {
-    sayHi(name);
-}
+server.listen(5000);
