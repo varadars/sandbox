@@ -1,17 +1,16 @@
+import AutoLayout from "../components/AutoLayout";
 import { Tag } from "../components/Tag";
 
 export default function ComponentsShowcase() {
-  const pageStyle = {
-    backgroundColor: "gray",
-  };
-
   return (
-    <>
-      <div style={pageStyle}>
-        <h1>Components Showcase</h1>
+    <div
+      style={{ backgroundColor: "green", width: "100%" }}
+    >
+      <h1>Components Showcase</h1>
+      <AutoLayout gap={8}>
         <Tag>Automation</Tag>
         <Tag className="secondary">Automation</Tag>
-      </div>
-    </>
+      </AutoLayout>
+    </div>
   );
 }

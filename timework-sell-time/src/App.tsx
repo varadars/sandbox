@@ -1,15 +1,22 @@
 import ComponentsShowcase from "./pages/ComponentsShowcase";
 import { useState } from "react";
 import "./globals.css";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+} from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <nav>
-        <button>App</button>
-        <button>Components Showcase</button>
-      </nav>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/dev/showcase"
+          element={<ComponentsShowcase />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
