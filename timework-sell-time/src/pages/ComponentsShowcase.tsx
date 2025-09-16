@@ -1,16 +1,39 @@
-import AutoLayout from "../components/AutoLayout";
-import { Tag } from "../components/Tag";
+import { AutoLayoutVertical } from "../components/AutoLayout";
+import { Tag, HeaderTag } from "../components/Tag";
+import { Card, CardHeader } from "../components/Card";
 
 export default function ComponentsShowcase() {
   return (
     <div
-      style={{ backgroundColor: "green", width: "100%" }}
+      style={{
+        backgroundColor: "gray",
+        width: "100vw",
+        height: "100vh",
+      }}
     >
-      <h1>Components Showcase</h1>
-      <AutoLayout gap={8}>
-        <Tag>Automation</Tag>
-        <Tag className="secondary">Automation</Tag>
-      </AutoLayout>
+      <div
+        style={{
+          margin: "20px",
+        }}
+      >
+        <AutoLayoutVertical gap={8}>
+          <Tag>Automation</Tag>
+          <Tag className="secondary">Automation</Tag>
+          <HeaderTag>Automation</HeaderTag>
+          <HeaderTag className="secondary">
+            Automation
+          </HeaderTag>
+          <Card>
+            <CardHeader>
+              <HeaderTag>Automation</HeaderTag>
+              <HeaderTag className="secondary">
+                Automation
+              </HeaderTag>
+            </CardHeader>
+            This is a card component.
+          </Card>
+        </AutoLayoutVertical>
+      </div>
     </div>
   );
 }

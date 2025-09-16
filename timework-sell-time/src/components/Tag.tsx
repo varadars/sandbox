@@ -16,11 +16,11 @@ export const Tag = styled.div`
 
 export const HeaderTag = styled.div`
   font-size: 11px;
+  font-weight: 500;
   background-color: var(--primary-light);
   color: var(--primary-dark);
-  padding: 3px 15px;
-  margin: 10px;
-  border-radius: 8px;
+  padding: 1px 15px;
+  border-radius: 12px;
   width: max-content;
 
   &.secondary {
