@@ -4,12 +4,17 @@
     font-family: 'Jetbrains Mono';
     margin: 0;
     padding: 0;
+    border: 1px solid black;
 }
 
 body{
-    padding: 50px;
-    margin: 0 auto;
+    padding: 200px 100px;
     text-align: center;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
 }
 
 .title {
@@ -30,16 +35,30 @@ body{
     list-style: none;
     font-size: 20px;
     width: fit-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .links ul li {
     border-radius: 5px;
     width: fit-content;
     margin: 5px 0;
-    padding: 5px 10px;
+    padding: 20px;
     background-color: rgb(177, 176, 255);
     border: 5px;
     border-color: black;
+    border-radius: 5px;
+    font-size: 30px;
+    text-align: left;
+}
+
+.preview {
+    margin: 10px;
+    border-radius: 20px;
+    width: 900px;
+    height: 300px;
 }
 
 .links ul li a{

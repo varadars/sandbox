@@ -1,0 +1,68 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-color: white;
+}
+
+h1 {
+    font-size: 128px;
+    margin: 0px;
+}
+
+h2 {
+    font-size: 72px;
+    margin: 0px;
+}
+
+.title {
+    text-align: left;
+}
+
+
+.screen {
+    margin: 30vh auto;
+    width: max-content;
+}
+
+.board {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.section {
+    width: 400px;
+    text-align: center;
+    border: 1px solid black;
+    padding: 20px;
+    margin: 10px;
+}
+
+.score {
+    text-align: right;
+    background-color: darkblue;
+    color: white;
+    padding: 0px 25px;
+    margin: 20px 0px;
+}
+
+.winning {
+    background-color: green;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    border: 1px solid black;
+    justify-content: space-around;
+}
+
+.button {
+    border: 1px solid black;
+    padding: 5px 30px;
+    font-size: 20px;
+    margin: 10px;
+    width: max-content;
+}
