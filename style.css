@@ -4,7 +4,6 @@
     font-family: 'Jetbrains Mono';
     margin: 0;
     padding: 0;
-    border: 1px solid black;
 }
 
 body{
@@ -20,6 +19,7 @@ body{
 .title {
     margin: 0 auto;
     text-align: left;
+    border: 2px solid black;
 }
 
 .title h1 {
@@ -29,6 +29,7 @@ body{
 
 .links {
     margin: 20px 0 ;
+    padding: 0;
 }
 
 .links ul{
@@ -38,26 +39,29 @@ body{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 20px
 }
 
 .links ul li {
     border-radius: 5px;
-    width: fit-content;
-    margin: 5px 0;
-    padding: 20px;
-    background-color: rgb(177, 176, 255);
-    border: 5px;
-    border-color: black;
+    padding: 30px;
+    border: 2px solid black;
+    background-color: rgb(224, 224, 224);
     border-radius: 5px;
     font-size: 30px;
     text-align: left;
 }
 
+.description {
+    width: 800px;
+    font-style: italic;
+    color: gray;
+}
+
 .preview {
-    margin: 10px;
+    margin: 10px 10px 10px 0;
     border-radius: 20px;
-    width: 900px;
+    width: 950px;
     height: 300px;
 }
 

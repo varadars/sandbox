@@ -103,13 +103,14 @@ const root = document.documentElement;
 const themeToggle = document.getElementById("theme-toggle");
 
 themeToggle.addEventListener("click", (event) => {
-  let theme = root.style.getPropertyValue("color-scheme");
-  console.log(theme);
+  const theme =
+    root.style.getPropertyValue("color-scheme") == "dark"
+      ? "light"
+      : "dark";
 
-  root.style.setProperty(
-    "color-scheme",
-    theme == "dark" ? "light" : "dark",
-  );
+  root.style.setProperty("color-scheme", theme);
+
+  themeToggle.textContent = theme;
 });
 
 document

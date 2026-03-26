@@ -6,7 +6,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Inter", sans-serif;
-    color: rgb(255 255 255);
+    color: light-dark(black,rgb(255 255 255));
     background-color: #1C1C1C;
 }
 
@@ -26,6 +26,14 @@ h2 {
     line-height: 28px;
     margin: 0;
     color: light-dark(#6B7280,#D5D4D8);
+}
+
+#theme-toggle {
+    width: fit-content;
+    margin: 0 0 10px 0;
+}
+#theme-toggle:hover {
+    margin: 0 0 10px 0;
 }
 
 #title {
