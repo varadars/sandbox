@@ -6,9 +6,14 @@
     padding: 0;
 }
 
-body{
+body {
     padding: 200px 100px;
     text-align: center;
+}
+
+a:hover {
+    color: black;
+    cursor: pointer;
 }
 
 .container {
@@ -39,12 +44,11 @@ body{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 20px
+    gap: 30px
 }
 
 .links ul li {
     border-radius: 5px;
-    padding: 30px;
     border: 2px solid black;
     background-color: rgb(224, 224, 224);
     border-radius: 5px;
@@ -52,24 +56,37 @@ body{
     text-align: left;
 }
 
-.description {
-    width: 800px;
-    font-style: italic;
-    color: gray;
+.title-box {
+    border-bottom: 2px black solid;
+    padding: 5px;
+}
+
+.links ul li a{
+    display: block;
+    color: rgb(96, 96, 96);
+    text-decoration-color: black;
+}
+
+.links ul li a:visited{
+    color: purple;
+}
+
+.links ul li a:hover, .links ul li a:focus{
+    color: black;
+}
+
+.box {
+    padding: 15px;
 }
 
 .preview {
-    margin: 10px 10px 10px 0;
     border-radius: 20px;
     width: 950px;
     height: 300px;
 }
 
-.links ul li a{
-    color: rgb(96, 96, 96);
-    text-decoration: none;
-}
-
-.links ul li a:visited{
-    text-decoration: none;
+.description {
+    width: 800px;
+    font-style: italic;
+    color: gray;
 }
