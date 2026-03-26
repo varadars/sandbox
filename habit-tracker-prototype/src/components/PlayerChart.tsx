@@ -4,7 +4,6 @@ import {
   PieChart,
   Pie,
   Tooltip,
-  Label,
 } from "recharts";
 
 import { useEffect, useState } from "react";
@@ -19,7 +18,7 @@ async function getPlayerHabitsWithPoints(playerId: string) {
   if (error || !habits) {
     console.error(
       "Failed to fetch habits.",
-      error?.message
+      error?.message,
     );
     return [];
   }
@@ -27,7 +26,7 @@ async function getPlayerHabitsWithPoints(playerId: string) {
   // Aggregate points: total points sum of all habits
   const totalPoints = habits.reduce(
     (sum, habit) => sum + (habit.points || 0),
-    0
+    0,
   );
 
   return { habits, totalPoints };
@@ -35,7 +34,7 @@ async function getPlayerHabitsWithPoints(playerId: string) {
 
 async function getPlayerHabitCompletion(
   playerId: string,
-  weekNumber: number
+  weekNumber: number,
 ) {
   const dayNumber = new Date().getDay();
 
@@ -49,7 +48,7 @@ async function getPlayerHabitCompletion(
   if (habitsError || !habits) {
     console.error(
       "Failed to fetch habits.",
-      habitsError?.message
+      habitsError?.message,
     );
     return [];
   }
@@ -67,7 +66,7 @@ async function getPlayerHabitCompletion(
   if (completionsError || !completions) {
     console.error(
       "Failed to fetch completions.",
-      completionsError?.message
+      completionsError?.message,
     );
     return habits.map((habit) => ({
       ...habit,
@@ -76,14 +75,14 @@ async function getPlayerHabitCompletion(
   }
 
   const completedIds = new Set(
-    completions.map((c) => c.habit_id)
+    completions.map((c) => c.habit_id),
   );
 
   return habits
     .sort(
       (a, b) =>
         Number(completedIds.has(a.id)) -
-        Number(completedIds.has(b.id))
+        Number(completedIds.has(b.id)),
     )
     .map((habit) => ({
       ...habit,
@@ -93,7 +92,7 @@ async function getPlayerHabitCompletion(
 
 async function getPlayerPointsByWeek(
   playerId: string,
-  weekNumber: number
+  weekNumber: number,
 ) {
   const { data: habits, error: habitsError } =
     await supabase
@@ -104,7 +103,7 @@ async function getPlayerPointsByWeek(
   if (habitsError || !habits) {
     console.error(
       "Failed to fetch habits.",
-      habitsError?.message
+      habitsError?.message,
     );
     return [];
   }
@@ -121,7 +120,7 @@ async function getPlayerPointsByWeek(
   if (pointsError || !points) {
     console.error(
       "Failed to fetch points.",
-      pointsError?.message
+      pointsError?.message,
     );
     return [];
   }
@@ -136,11 +135,11 @@ async function getPlayerPointsByWeek(
 
 async function generateDataLayers(
   weekNumber: number,
-  playerId: string
+  playerId: string,
 ) {
   const habits = await getPlayerPointsByWeek(
     playerId,
-    weekNumber
+    weekNumber,
   );
 
   const layers = Array.from(
@@ -150,7 +149,7 @@ async function generateDataLayers(
         const pointExists = habit.points.some(
           (point) =>
             point.day_number === dayNumber &&
-            point.week_number === weekNumber
+            point.week_number === weekNumber,
         );
 
         const dayNames = [
@@ -173,7 +172,7 @@ async function generateDataLayers(
           day: dayName,
         };
       });
-    }
+    },
   );
 
   return layers;
@@ -197,7 +196,7 @@ export const PlayerChart: React.FC<Props> = ({
     async function loadData() {
       const layers = await generateDataLayers(
         weekNumber,
-        playerId
+        playerId,
       );
       setDataLayers(layers);
     }
@@ -207,7 +206,7 @@ export const PlayerChart: React.FC<Props> = ({
   useEffect(() => {
     const timeout = setTimeout(
       () => setHasMounted(true),
-      300
+      300,
     );
     return () => clearTimeout(timeout);
   }, []);
