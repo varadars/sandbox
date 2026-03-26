@@ -11,25 +11,68 @@
         <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div class="generator">
+        <section id="container">
+        <div id="generator" class="page">
             <div id="popup">
             </div>
             <div class="header">
-                <div id="theme-toggle">light</div>
-                <h1 id="title">Generate a <span class="green">random password</span></h1>
-                <h2 id="subtitle">Never use an insecure password again.</h2>
+                <div class="theme-toggle" tabindex="0">dark</div>
+                <button id="menu-button" class="menu">menu</button>
+                <h1 id="title">generate a <span class="green">random password</span></h1>
+                <h2 id="subtitle">never use an insecure password again.</h2>
             </div>
             <button id="generate">Generate passwords</button>
             <div class="divider"></div>
             <div class="results">
-                <div class="result">
+                <button class="result">
                     <p class="result-text">egxWij@veiPUwK</p>
-                </div>
-                <div class="result">
+                </button>
+                <button class="result">
                     <p class="result-text">>nfJjy!dDvR&ial</p>
-                </div>
+                </button>
             </div>
-        </div>
+        </div>       
+        <div id="menu" class="settings-page">
+            <div class="header">
+                <button id="close-button" class="menu">x</button>
+            </div>
+            <form action="." class="settings">
+                <div class="sliders">
+                    <label for="spec-vals">allowed special characters</label>
+                    <div class="input">
+                        <input id="spec-vals" type="text" value="!().*^">
+                    </div>
+                    <label for="spec-num">special characters (min.)</label>
+                    <div class="slide-container">
+                        <input id="spec-num" type="range" min="1" max="5" value="3" class="slider">
+                        <p class="slide-val">3</p>
+                    </div>
+                    <label for="num-num">numeric chars (min.)</label>
+                    <div class="slide-container">
+                        <input id="num-num" type="range" min="1" max="5" value="3" class="slider">
+                        <p class="slide-val">3</p>
+                    </div>
+                    <label for="upp-num">uppercase chars (min.)</label>
+                    <div class="slide-container">
+                        <input id="upp-num" type="range" min="1" max="5" value="3" class="slider">
+                        <p class="slide-val">3</p>
+                    </div>
+                    <label for="low-num">lowercase chars (min.)</label>
+                    <div class="slide-container">
+                        <input id="low-num" type="range" min="1" max="5" value="3" class="slider">
+                        <p class="slide-val">3</p>
+                    </div>
+                    <label for="pass-length">password length</label>
+                    <div class="slide-container">
+                        <input id="pass-length" type="range" min="1" max="25" value="15" class="slider">
+                        <p class="slide-val">15</p>
+                    </div>
+                </div>
+                
+            </form>
+        </div>     
+        </section>
+
     </body>
     <script src="index.js"></script>
 </html>
