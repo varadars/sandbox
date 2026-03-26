@@ -66,37 +66,6 @@ const numeric = [
   "8",
   "9",
 ];
-const specialChars = [
-  "~",
-  "`",
-  "!",
-  "@",
-  "#",
-  "$",
-  "%",
-  "^",
-  "&",
-  "*",
-  "(",
-  ")",
-  "_",
-  "-",
-  "+",
-  "=",
-  "{",
-  "[",
-  "}",
-  "]",
-  ",",
-  "|",
-  ":",
-  ";",
-  "<",
-  ">",
-  ".",
-  "?",
-  "/",
-];
 const characters = [
   "A",
   "B",
@@ -160,53 +129,23 @@ const characters = [
   "7",
   "8",
   "9",
-  "~",
-  "`",
-  "!",
-  "@",
-  "#",
-  "$",
-  "%",
-  "^",
-  "&",
-  "*",
-  "(",
-  ")",
-  "_",
-  "-",
-  "+",
-  "=",
-  "{",
-  "[",
-  "}",
-  "]",
-  ",",
-  "|",
-  ":",
-  ";",
-  "<",
-  ">",
-  ".",
-  "?",
-  "/",
 ];
 
 const results = document.querySelectorAll(".result-text");
 const root = document.documentElement;
-const themeToggle = document.getElementById("theme-toggle");
+const themeToggles =
+  document.querySelectorAll(".theme-toggle");
 
-const lowNum = localStorage.getItem("lowNum") ?? 3;
-const uppNum = localStorage.getItem("uppNum") ?? 3;
-const specNum = localStorage.getItem("specNum") ?? 3;
-const numNum = localStorage.getItem("numNum") ?? 3;
-const passLength = localStorage.getItem("passLength") ?? 15;
 let theme = localStorage.getItem("theme") ?? "dark";
 setTheme();
 
-themeToggle.addEventListener("click", (event) => {
-  theme = theme === "dark" ? "light" : "dark";
-  setTheme();
-});
+themeToggles.forEach((themeToggle) =>
+  themeToggle.addEventListener("click", (event) => {
+    console.log("boop");
+    theme = theme === "dark" ? "light" : "dark";
+    setTheme();
+  }),
+);
 
 document
   .querySelectorAll(".result-text")
@@ -227,8 +166,37 @@ document
     });
   });
 
+document
+  .getElementById("menu-button")
+  .addEventListener("click", (event) => {
+    document.getElementById("menu").style.zIndex = 2;
+  });
+
+document.querySelectorAll(".slider").forEach((slider) => {
+  const output = slider.parentElement.querySelector("p");
+  slider.oninput = function () {
+    output.innerHTML = this.value;
+    localStorage.setItem(slider.id, this.value);
+  };
+  console.log(slider.id);
+});
+
+document.getElementById("spec-vals").oninput = function () {
+  localStorage.setItem("spec-vals", this.value);
+};
+
+document
+  .getElementById("close-button")
+  .addEventListener("click", (event) => {
+    document.getElementById("menu").style.zIndex = -1;
+  });
+
 function getNewPassword() {
+  let passLength =
+    localStorage.getItem("pass-length") ?? 15;
   let password = "";
+  const specialCharacters =
+    localStorage.getItem("spec-vals") ?? "!().*^".split("");
   const passwordChars = [];
 
   const getRandom = (arr, amt) => {
@@ -238,12 +206,24 @@ function getNewPassword() {
       );
     }
   };
-
-  getRandom(specialChars, specNum);
-  getRandom(numeric, numNum);
-  getRandom(uppercase, uppNum);
-  getRandom(uppercase, lowNum);
-  getRandom(characters, passLength - passwordChars.length);
+  console.log("helo".split(""));
+  getRandom(
+    specialCharacters,
+    localStorage.getItem("spec-num") ?? 3,
+  );
+  getRandom(numeric, localStorage.getItem("num-num") ?? 3);
+  getRandom(
+    uppercase,
+    localStorage.getItem("low-num") ?? 3,
+  );
+  getRandom(
+    uppercase,
+    localStorage.getItem("upp-num") ?? 3,
+  );
+  getRandom(
+    characters.concat(specialCharacters),
+    passLength - passwordChars.length,
+  );
 
   for (let i = 0; i < passLength; i++) {
     let chosen =
@@ -253,12 +233,13 @@ function getNewPassword() {
     passwordChars.splice(passwordChars.indexOf(chosen), 1);
     password += chosen;
   }
-
   return password;
 }
 
 function setTheme() {
   root.style.setProperty("color-scheme", theme);
-  themeToggle.textContent = theme;
+  themeToggles.forEach(
+    (themeToggle) => (themeToggle.textContent = theme),
+  );
   localStorage.setItem("theme", theme);
 }
