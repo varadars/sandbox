@@ -1,0 +1,125 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Source Sans 3", sans-serif;
+    width: 400px;
+    margin: 0 auto;
+    background-color: #EDEDED;
+}
+
+.row-space-between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header {
+    height: 60px;
+    padding: 5px 15px;
+    border-bottom: 2px #C6C6C6 solid;
+    background-color: white;
+}
+
+p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.post {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 25px solid #EDEDED;
+}
+
+.container {
+    padding: 0 10px;
+}
+
+.post-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 10px;
+    margin: 10px 0 10px 0;
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pfp {
+    border-radius: 50%;
+    height: 35px;
+}
+
+.logo {
+    height: 60px;
+}
+
+.post-img {
+    width: 100%;
+    position: relative;
+}
+
+.caption {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px 10px 15px 10px;
+}
+
+.interactions {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.caption button {
+    width: 25px;
+    height: 25px;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    background-size: cover;
+}
+
+.like {
+    background-image: url("images/icon-heart.png");
+    transition: transform 0.1s ease-in-out;
+}
+
+.like:active {
+    transform: scale(1.1);
+}
+
+.comment {
+    background-image: url("images/icon-comment.png");
+}
+
+.share {
+    background-image: url("images/icon-dm.png");
+}
+
+.liked {
+    background-image: url("images/heart.png");
+}
+
+.caption-text {
+    margin: 0 0 0 2px;
+}
+
+.likes {
+    margin: 10px 0;
+}
+

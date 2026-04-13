@@ -1,0 +1,233 @@
+/* generic styles */
+
+@font-face {
+  font-family: 'Tanglish';
+  src: url('fonts/HFF\ Thai\ Dye.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Receipt';
+  src: url('fonts/Fake\ Receipt.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+    /* border: 1px solid black; */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 480px;
+    margin: auto;
+    position: relative;
+    padding: 100px 0;
+    background-color: grey;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+@media (width <= 800px) {
+  body {
+    padding: 0;
+  }
+}
+
+button {
+    font-family: 'Receipt', monospace;
+}
+
+button:hover,
+button:focus {
+    background-color: rgb(185, 185, 185);
+}
+
+header, section, footer {
+    width: 480px;
+    margin: auto;
+}
+
+/* global classes */
+
+.black-border {
+    border: 1px solid black;
+}
+
+.center {
+    text-align: center;
+}
+
+/* header */
+
+header {
+    height: 100px;
+}
+
+.header-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* menu */
+#menu-container {
+    background-color: rgb(245, 239, 220);
+}
+
+#menu {
+    padding: 40px 30px;
+    list-style: none;
+
+    height: 350px;
+    scrollbar-color: rgb(216, 209, 186) rgba(255, 0, 0, 0);
+    scrollbar-width: thin;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+}
+
+.menu-item-img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.menu-item-name {
+    font-family: 'Tanglish', sans-serif;
+    font-size: 24px;
+    padding: 3px 0px;
+}
+
+.add-menu-item {
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 30%;
+    border: none;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.add-menu-item:hover,
+.add-menu-item:focus {
+    background-color: rgb(216, 209, 186);
+}
+
+.add-menu-item i{
+    font-size: 25px;
+}
+
+/* order section */
+
+#order {
+    padding: 40px 30px;
+    background-color: rgb(245, 239, 220);
+}
+
+.your-order {
+    margin-bottom: 20px;
+}
+
+.small-text {
+    font-size: 12px;
+}
+
+.receipt {
+    background-image: url('./images/receipt.avif');
+    background-position: cover;
+    box-shadow: 0px 0px 10px rgb(214, 207, 182); 
+    padding: 20px;
+    width: 350px;
+    margin: auto;
+    margin-bottom: 30px;
+    font-family: 'Receipt', monospace;
+}
+
+table {
+    width: 100%;
+    margin: 10px 0;
+    border-top: dashed 1px black;
+    border-bottom: dashed 1px black;
+}
+
+.price {
+    margin-left: auto;
+}
+
+.order-item {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 5px 0px;
+    align-items: center;
+}
+
+.remove-menu-item {
+    padding: 0px 5px;
+}
+
+.remove-menu-item:hover {
+    border: 2px solid;
+    border-radius: 2px;
+}
+
+
+.place-order {
+    padding: 10px 10px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: rgb(255, 145, 0);
+}
+
+.place-order:hover,
+.place-order:focus {
+    background-color: rgb(255, 111, 0);
+    color: white;
+}
+
+
+/* modal */
+
+.hidden {
+    display: none;
+}
+
+.modal {
+    font-family: 'Receipt', monospace;
+    background-color: rgb(245, 239, 220);
+
+    width: 350px;
+    height: max-content;
+    box-shadow: 0px 0px 10px grey;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    text-align: center;
+    padding: 20px
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 20px auto;
+}
+
+form input {
+    font-family: 'Receipt', monospace;
+}

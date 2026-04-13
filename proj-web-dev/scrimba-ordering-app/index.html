@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Menu</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <header class="black-border">
+        <img class="header-img" src="./images/header.jpg" alt="Picture of idlis on a table runner with chutney, sambar, and coffee.">
+    </header>
+    <section class="black-border" id="menu-container">
+        <ul id="menu"></ul>
+    </section>
+    <section class="black-border" id="order"></section>
+    <section class="modal black-border hidden">
+        <h2>Purchase Details</h2>
+        <form id="payment-details" action="">
+            <input 
+            id="full-name" 
+            name="full-name" 
+            type="text" 
+            placeholder="Enter your full name" 
+            aria-label="Full Name"
+            maxlength="25"
+            required />
+            <input 
+            id="email" 
+            name="email" 
+            type="email" 
+            placeholder="Enter your email" 
+            aria-label="Full Name"
+            required/>
+            <button 
+            id="submit"
+            name="submit"
+            type="submit"
+            >Pay</button>
+        </form>
+    </section>    
+    
+    <script type="module" src="./index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2"></script>
+</body>
+</html>
