@@ -1,2 +1,18 @@
 .vscode/
 .vscode/*
+
+.DS_Store
+
+# Allow sharing of specific configuration files if needed
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Ignore workspace storage and history
+.history/
+*.code-workspace
+
+# Ignore built VS Code extensions
+*.vsix
