@@ -4,6 +4,12 @@
     font-family: 'Jetbrains Mono';
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    border: 1px black solid;
+}
+
+.no-border {
+    border: none;
 }
 
 body {
@@ -24,11 +30,11 @@ a:hover {
 .title {
     margin: 0 auto;
     text-align: left;
-    border: 2px solid black;
+    border: 3px solid black;
 }
 
 .title h1 {
-    font-size: 71px;
+    font-size: 5rem;
     font-style: italic;
 }
 
@@ -39,54 +45,69 @@ a:hover {
 
 .links ul{
     list-style: none;
-    font-size: 20px;
-    width: fit-content;
+    font-size: 1.25rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 30px
 }
 
-.links ul li {
+#projects {
+    gap: 1em;
+    flex-grow: 1;
+}
+
+.link {
+    flex: 1 680px;
     border-radius: 5px;
-    border: 2px solid black;
+    border: 3px solid black;
     background-color: rgb(224, 224, 224);
-    border-radius: 5px;
     font-size: 30px;
     text-align: left;
 }
 
 .title-box {
     border-bottom: 2px black solid;
-    padding: 5px;
+    padding: 0.25em;
 }
 
-.links ul li a{
+
+.link a{
     display: block;
     color: rgb(96, 96, 96);
     text-decoration-color: black;
 }
 
-.links ul li a:visited{
+.link a:visited{
     color: purple;
 }
 
-.links ul li a:hover, .links ul li a:focus{
+.link a:hover, 
+.link a:focus{
     color: black;
 }
 
-.box {
-    padding: 15px;
+.preview {
+    width: 100%;
 }
 
-.preview {
-    border-radius: 20px;
-    width: 950px;
-    height: 300px;
+/* caption */
+
+.caption {
+    margin: 0.5em;
+}
+
+.tags {
+    margin-bottom: 1em;
+    gap: 2px;
+}
+
+.tag {
+    background-color: #222;
+    padding: 0.1em 1em;
+    color: whitesmoke;
 }
 
 .description {
-    width: 800px;
     font-style: italic;
     color: gray;
 }
