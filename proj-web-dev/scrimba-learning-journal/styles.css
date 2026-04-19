@@ -114,6 +114,7 @@ nav {
     -webkit-line-clamp: 2;
             line-clamp: 2; 
     -webkit-box-orient: vertical;
+    font-size: 1.75em;
 }
 
 .date {
@@ -142,6 +143,11 @@ nav {
     padding: 1em;
 }
 
+.current-post .description {
+    -webkit-line-clamp: none;
+            line-clamp: none; 
+}
+
 .current-post-img {
     box-sizing: border-box;
     width: 100%;
@@ -159,6 +165,13 @@ nav {
 
 /* about page */
 
+.about-section {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
 .profile-img {
     display: block;
     width: 250px;
@@ -166,7 +179,11 @@ nav {
     object-fit: cover;
     border-radius: 50%;
     border: 4px solid black;
-    margin: auto;
+    margin: 1em auto;
+}
+
+.post-content {
+    text-align: left;
 }
 
 @media (min-width: 800px) {

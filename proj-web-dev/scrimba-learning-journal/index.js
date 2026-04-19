@@ -11,7 +11,7 @@ document.addEventListener("click", (e) => {
     params.append("id", e.target.dataset.entry);
 
     const url = `post.html?${params.toString()}`;
-    window.open(url, "_blank", "width=600,height=400");
+    window.open(url, "_self", "width=600,height=400");
   }
 });
 
