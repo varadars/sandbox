@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+
+    <!-- icons -->
+    <script src="https://cdn.jsdelivr.net/npm/phosphor-icons@1.4.2/src/index.min.js"></script>
+    <title>My Photo Journal</title>
+</head>
+<body>
+    <header>
+        <div class="site-heading">
+            <i class="ph ph-camera"></i>
+            <h1 class="heading">My photojournal</h1>
+        </div>
+          <nav>
+            <a href="./index.html">HOME</a>
+            <a href="./about.html">ABOUT ME</a> 
+        </nav>
+    </header>
+    <main id="main">
+        <div id="current-post" class="current-post">
+            
+        </div>
+        <div id="main-content" class="main-content"></div>
+    </main>
+    <script type="module" src="./post.js"></script>
+</body>
+</html>
