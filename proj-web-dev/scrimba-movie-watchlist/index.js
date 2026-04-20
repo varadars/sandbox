@@ -66,7 +66,7 @@ addToFavoritesOrWatchlist(null, "favorites", favorites);
 
 async function movieSearch(keyword) {
   const res = await fetch(
-    `http://www.omdbapi.com/?s=${keyword}&apikey=${apiKey}`,
+    `https://www.omdbapi.com/?s=${keyword}&apikey=${apiKey}`,
   );
   const data = await res.json();
   const detailedData = await getDetailedMovies(data.Search);
@@ -76,7 +76,7 @@ async function movieSearch(keyword) {
 
 async function getMovie(imdbID) {
   const res = await fetch(
-    `http://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`,
+    `https://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`,
   );
   const movie = await res.json();
   return movie;
