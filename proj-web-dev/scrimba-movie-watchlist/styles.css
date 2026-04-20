@@ -1,0 +1,122 @@
+@font-face {
+  font-family: 'Molen';
+  src: url('fonts/Molen\ Surplus.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+    /* border: 2px solid black; */
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+
+}
+
+body {
+    overflow: auto;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    background-color: black;
+
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    background-image: url("./images/mountains.webp") ;
+    background-size: cover, cover;
+    background-repeat: no-repeat, no-repeat;
+    background-blend-mode: soft-light, normal;
+
+    filter: sepia(0.6) contrast(0.8) brightness(1.1) saturate(1.2) opacity(0.4);
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+h1 {
+    padding: 100px 0 50px 0;
+    margin: auto;
+    display: block;
+    font-family: "Molen", sans-serif;
+    font-size: 20rem;
+    font-style: italic;
+    color: rgb(7, 7, 6);
+    letter-spacing: 2rem;
+    text-align: center;
+}
+
+main {
+    margin: auto;
+    width: 1200px;
+}
+
+.tabs {
+    display: flex;
+    flex-direction: row;
+}
+
+.tab {
+    background-color: #a7988b;
+    border: 1px solid black;
+    padding: 0.5em;
+}
+
+.selected {
+    background-color: #dbdbdb;
+}
+
+.page {
+    width: 100%;
+    background-color: #dbdbdb;
+    border: 1px solid black;
+    padding: 2em;
+    margin-bottom: 5em;
+    min-height: 600px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* watchlist */
+
+.search {
+    user-select: text;
+
+    font-style: italic;
+    width: 100%;
+}
+.search::placeholder {
+    font-style: italic;
+}
+
+.movie {
+    padding: 1em 1em 1em 0;
+    display: flex;
+    gap: 1em;
+}
+
+.poster {
+    width: 130px;
+    cursor: pointer;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+}
+
+.heading,
+.subheading {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 0.5em 0;
+}
+
+.title, p {
+    margin: 0;
+}

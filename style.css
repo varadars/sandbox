@@ -94,6 +94,7 @@ a:hover {
 
 .caption {
     margin: 0.5em;
+    border: none;
 }
 
 .tags {

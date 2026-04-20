@@ -86,6 +86,15 @@ export const projects = [
     src: "./proj-web-dev/scrimba-color-picker/index.html",
     description:
       "First milestone for APIs, pretty fun to play with. You can spam the spacebar to generate random color schemes like coolors.co.",
-    tags: ["scrimba", "API", "responsive-design"],
+    tags: ["scrimba", "querying-api", "responsive-design"],
+  },
+  {
+    id: 9,
+    name: "Movie Watchlist",
+    date_created: new Date("4/20/26"),
+    src: "./proj-web-dev/scrimba-movie-watchlist/index.html",
+    description:
+      "Another API milestone. This one took quite a bit of error handling but the functionality is nice.",
+    tags: ["scrimba", "querying-api", "js-focused"],
   },
 ];
