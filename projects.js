@@ -75,7 +75,17 @@ export const projects = [
     date_created: new Date("4/18/26"),
     src: "./proj-web-dev/scrimba-learning-journal/index.html",
     description:
-      "Scrimba milestone project for the free Javascript course, didn't really do much design but added in winner color and new game reset.",
-    tags: ["scrimba", "css-focused", "responsive design"],
+      "Scrimba milestone project for responsive design section; my favorite part is how the post detaches and becomes like a popup page on desktop.",
+    tags: ["scrimba", "css-focused", "responsive-design"],
+  },
+
+  {
+    id: 8,
+    name: "Color Picker",
+    date_created: new Date("4/19/26"),
+    src: "./proj-web-dev/scrimba-color-picker/index.html",
+    description:
+      "First milestone for APIs, pretty fun to play with. You can spam the spacebar to generate random color schemes like coolors.co.",
+    tags: ["scrimba", "API", "responsive-design"],
   },
 ];

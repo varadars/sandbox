@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+    <title>Color Picker</title>
+</head>
+<body>
+    <div id="copied" class="copied">
+            copied!
+        </div>
+    <main>
+        <div class="settings">
+            <div class="color-picker">
+                <input type="color" name="color" value="#423780" id="color-picker">
+            </div>
+            <div class="theme-dropdown">
+                <select name="mode" id="mode-picker">
+                    <option value="monochrome">monochrome</option>
+                    <option value="monochrome-dark">monochrome-dark</option>
+                    <option value="monochrome-light">monochrome-light</option>
+                    <option value="analogic" selected>analogic</option>
+                    <option value="complement">complement</option>
+                    <option value="analogic-complement">analogic-complement</option>
+                    <option value="triad">triad</option>
+                    <option value="quad">quad</option>
+                </select>
+            </div>
+            <button class="get-color-scheme">generate</button>
+        </div>
+        <div id="colors" class="colors">
+            
+        </div>
+    </main>
+    <script type="module" src="index.js"></script>
+</body>
+</html>

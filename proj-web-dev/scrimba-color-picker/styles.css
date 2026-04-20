@@ -1,0 +1,73 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    position: relative;
+}
+
+main {
+    display: grid;
+    grid-template-rows: max-content auto;
+    min-height: 100vh;
+}
+
+.copied {
+    display: none;
+    position: absolute;
+    background-color: rgb(64, 124, 255);
+    color: white;
+    height: max-content;
+    width: max-content;
+    border-radius: 3px;
+    padding: 0.15em 1em;
+    top: 100px;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
+
+.settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    padding: 1em;
+}
+
+select, button {
+    font-family: "Poppins", sans-serif;
+    padding: 0.5em;
+}
+
+.colors {
+    display: grid;
+    grid-auto-flow: column; 
+    grid-auto-columns: 1fr;
+}
+
+.color {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    text-align: center;
+    padding: 4em 1em;
+
+    height: 100%;
+    cursor: pointer;
+}
+
+.color h2, 
+.color p {
+    display: none;
+}
+
+@media (min-width: 1000px) {
+    .color h2, 
+    .color p {
+        display: block;
+    }
+}
