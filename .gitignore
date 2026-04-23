@@ -16,3 +16,10 @@
 
 # Ignore built VS Code extensions
 *.vsix
+
+*.env
+
+node_modules/
+.env
+dist/
+build/
